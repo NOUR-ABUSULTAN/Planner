@@ -110,6 +110,10 @@ h1 svg{width:28px;height:28px;animation:sway 6s ease-in-out infinite}
 .box.next{border-width:2.5px;box-shadow:0 0 0 3px var(--s)}
 .box.locked{opacity:.45}
 .note{font-size:12.5px;color:var(--muted)}
+.hs{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.hn{font-size:13.5px;font-weight:700;color:var(--c)}
+.hn small{color:var(--muted);font-weight:400}
+.box.pg{width:auto;min-width:42px;padding:0 6px;font-size:13px}
 .steps{display:flex;gap:5px}
 .step{flex:1;min-width:0;border:0;font-size:12.5px;font-weight:600;padding:5px 0;border-radius:9px;background:var(--s);color:var(--c)}
 .step.on{background:var(--c);color:var(--paper)}
@@ -186,7 +190,7 @@ details>summary::-webkit-details-marker{display:none}
   <section class="view" id="v-month" hidden>
     <div class="card"><div class="nav"><button id="m-prev" aria-label="الشهر السابق">→</button><b id="m-title"></b><button id="m-next" aria-label="الشهر التالي">←</button></div></div>
     <div class="stats" id="m-stats"></div>
-    <div class="sec ilm"><header>الكورسات</header><div class="body" id="m-courses"></div></div>
+    <div class="sec ilm"><header>الحفظ والكورسات</header><div class="body" id="m-courses"></div></div>
     <div class="card"><div class="lbl" style="font-size:16px;color:var(--ink)">أهداف الشهر <span id="m-gsum"></span></div>
       <div class="bar"><i id="m-bar"></i></div>
       <div id="g-list" style="margin-top:8px"></div>
@@ -220,7 +224,7 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "510635677020",
   appId: "1:510635677020:web:4b738485c973dc069a9d99"
 };
-const SEED = {"v": 3, "seedVersion": 3, "tasks": [{"id": "s2t132", "title": "حفظ جديد: الدخان ص 496", "sec": "din", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t133", "title": "مراجعة: الشورى ص 483–484", "sec": "din", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t136", "title": "Nomo: خطة محتوى آخر أسبوع بأكتوبر", "sec": "work", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t137", "title": "حفظ جديد: الدخان ص 497", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t138", "title": "مراجعة: الشورى ص 485–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t139", "title": "تسميع: الدخان ص 496–497 + الشورى 483–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t142", "title": "Nomo: اختيار فيديوهات تيك توك حسب الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t143", "title": "Fixify: كتابة الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t145", "title": "حفظ جديد: الدخان ص 498", "sec": "din", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t146", "title": "مراجعة: الشورى ص 487–489", "sec": "din", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t149", "title": "GD: خطة المحتوى (مع WhatsApp Orders قبل فعالية المطاعم)", "sec": "work", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t151", "title": "حفظ جديد: الجاثية ص 499", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t152", "title": "مراجعة: الزخرف ص 489–490", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t153", "title": "تسميع: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t156", "title": "Fixify: تصميم البوسترات", "sec": "work", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t157", "title": "حفظ جديد: الجاثية ص 500", "sec": "din", "date": "2026-10-23", "done": false, "doneAt": null}, {"id": "s2t158", "title": "مراجعة: الزخرف ص 491–492", "sec": "din", "date": "2026-10-23", "done": false, "doneAt": null}, {"id": "s2t161", "title": "حفظ جديد: الجاثية ص 501", "sec": "din", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t162", "title": "مراجعة: الزخرف ص 493–495", "sec": "din", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t165", "title": "GD: جدولة/نشر الأسبوع على X وتيك توك وميتا بزنس", "sec": "work", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t167", "title": "حفظ جديد: الجاثية ص 502", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t168", "title": "مراجعة: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t169", "title": "تسميع: الجاثية كاملة (499–502)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t172", "title": "Fixify: تصميم الكاروسيلات", "sec": "work", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t174", "title": "حفظ جديد: فصلت ص 477", "sec": "din", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t175", "title": "مراجعة: الشورى كاملة (483–489)", "sec": "din", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t178", "title": "Fixify: جدولة المحتوى على X", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t179", "title": "GD: متابعة التحليل (أداء الأسبوع)", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t180", "title": "حفظ جديد: فصلت ص 478", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t181", "title": "مراجعة: الزخرف كاملة (489–495)", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t182", "title": "تسميع: فصلت 477–478 + مراجعة الشورى", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t186", "title": "حفظ جديد: فصلت ص 479", "sec": "din", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t187", "title": "مراجعة الجزء 25 كامل (482–502) تجهيزاً للاختبار", "sec": "din", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t190", "title": "Nomo: تحليل محتوى أكتوبر (تيك توك + X)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t191", "title": "GD: جدولة الأسبوع الجاي (X + تيك توك + ميتا)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t192", "title": "حفظ جديد: فصلت ص 480", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t193", "title": "مراجعة خفيفة قبل الاختبار: الدخان + الجاثية", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t194", "title": "اختبار الجزء 25 (لو موعده غير، انقليه)", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t198", "title": "حفظ جديد: فصلت ص 481", "sec": "din", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t199", "title": "مراجعة: فصلت 477–480", "sec": "din", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t201", "title": "Nomo: كتابة تقرير أكتوبر", "sec": "work", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t202", "title": "حفظ جديد: فصلت ص 482", "sec": "din", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t203", "title": "مراجعة: فصلت 477–482", "sec": "din", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t206", "title": "Fixify: تقرير أكتوبر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t207", "title": "GD: تحليل الشهر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t209", "title": "حفظ غافر (نوفمبر)", "sec": "din", "date": null, "done": false, "doneAt": null}], "checks": {}, "water": {}, "courses": [{"id": "taqat", "name": "طاقات", "short": "طاقات", "unit": "فيديو", "total": 9}, {"id": "c2c", "name": "C2C · المحاضرات المتراكمة", "short": "C2C", "unit": "محاضرة", "total": 10}, {"id": "fwd", "name": "Forward", "short": "Forward", "unit": "الوحدة", "total": 4, "release": ["2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"]}], "queue": ["c2c:1", "fwd:1", "taqat:1", "c2c:2", "c2c:3", "taqat:2", "taqat:3", "c2c:4", "c2c:5", "fwd:2", "taqat:4", "c2c:6", "taqat:5", "c2c:7", "c2c:8", "fwd:3", "taqat:6", "c2c:9", "c2c:10", "taqat:7", "taqat:8", "fwd:4", "taqat:9"], "units": {}, "story": [null, null, null, null, null, null], "goals": {"2026-10": [{"id": "s2g210", "title": "حفظ الدخان والجاثية (صفحة يومياً)", "sec": "din", "done": false}, {"id": "s2g211", "title": "حفظ فصلت (477–482)", "sec": "din", "done": false}, {"id": "s2g212", "title": "مراجعة الشورى والزخرف", "sec": "din", "done": false}, {"id": "s2g213", "title": "اختبار الجزء 25", "sec": "din", "done": false}, {"id": "s2g214", "title": "مذاكرة يومية للمساقات الثمانية", "sec": "ilm", "done": false}, {"id": "s2g215", "title": "C2C: المحاضرات العشر المتراكمة + ملخصاتها", "sec": "ilm", "done": false}, {"id": "s2g216", "title": "طاقات: الكورس كامل (9 فيديوهات)", "sec": "ilm", "done": false}, {"id": "s2g217", "title": "Forward: الوحدات 1–4", "sec": "ilm", "done": false}, {"id": "s2g218", "title": "Nomo: خطة آخر أسبوع + فيديوهات تيك توك + تحليل وتقرير أكتوبر", "sec": "work", "done": false}, {"id": "s2g219", "title": "Fixify: خطة + تصاميم + جدولة X + تقرير", "sec": "work", "done": false}, {"id": "s2g220", "title": "GD: خطة + جدولة X وتيك توك وميتا + تحليل", "sec": "work", "done": false}, {"id": "s2g221", "title": "العبادات اليومية: قيام، ضحى، استخارة، رقية، البقرة", "sec": "nafs", "done": false}, {"id": "s2g222", "title": "الأذكار يومياً: الصباح والمساء والنوم", "sec": "nafs", "done": false}, {"id": "s3g1", "title": "المطرة (680 مل) + الفيتامين + ترطيب الوجه يومياً", "sec": "nafs", "done": false}, {"id": "s2g223", "title": "تدوين 3 أشياء جميلة يومياً + امتنان الأسبوع", "sec": "nafs", "done": false}, {"id": "s2g224", "title": "تسليم قصة المنحة للمسابقة", "sec": "dev", "done": false}, {"id": "s2g225", "title": "لينكدإن: خطوتين بالأسبوع", "sec": "dev", "done": false}, {"id": "s2g226", "title": "دولينجو يومياً", "sec": "dev", "done": false}]}};
+const SEED = {"v": 3, "seedVersion": 5, "tasks": [{"id": "s2t133", "title": "مراجعة: الشورى ص 483–484", "sec": "din", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t136", "title": "Nomo: خطة محتوى آخر أسبوع بأكتوبر", "sec": "work", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t138", "title": "مراجعة: الشورى ص 485–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t139", "title": "تسميع: الدخان ص 496–497 + الشورى 483–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t142", "title": "Nomo: اختيار فيديوهات تيك توك حسب الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t143", "title": "Fixify: كتابة الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t146", "title": "مراجعة: الشورى ص 487–489", "sec": "din", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t149", "title": "GD: خطة المحتوى (مع WhatsApp Orders قبل فعالية المطاعم)", "sec": "work", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t152", "title": "مراجعة: الزخرف ص 489–490", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t153", "title": "تسميع: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t156", "title": "Fixify: تصميم البوسترات", "sec": "work", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t158", "title": "مراجعة: الزخرف ص 491–492", "sec": "din", "date": "2026-10-23", "done": false, "doneAt": null}, {"id": "s2t162", "title": "مراجعة: الزخرف ص 493–495", "sec": "din", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t165", "title": "GD: جدولة/نشر الأسبوع على X وتيك توك وميتا بزنس", "sec": "work", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t168", "title": "مراجعة: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t169", "title": "تسميع: الجاثية كاملة (499–502)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t172", "title": "Fixify: تصميم الكاروسيلات", "sec": "work", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t175", "title": "مراجعة: الشورى كاملة (483–489)", "sec": "din", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t178", "title": "Fixify: جدولة المحتوى على X", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t179", "title": "GD: متابعة التحليل (أداء الأسبوع)", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t181", "title": "مراجعة: الزخرف كاملة (489–495)", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t182", "title": "تسميع: فصلت 477–478 + مراجعة الشورى", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t187", "title": "مراجعة الجزء 25 كامل (482–502) تجهيزاً للاختبار", "sec": "din", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t190", "title": "Nomo: تحليل محتوى أكتوبر (تيك توك + X)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t191", "title": "GD: جدولة الأسبوع الجاي (X + تيك توك + ميتا)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t193", "title": "مراجعة خفيفة قبل الاختبار: الدخان + الجاثية", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t194", "title": "اختبار الجزء 25 (لو موعده غير، انقليه)", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t199", "title": "مراجعة: فصلت 477–480", "sec": "din", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t201", "title": "Nomo: كتابة تقرير أكتوبر", "sec": "work", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t203", "title": "مراجعة: فصلت 477–482", "sec": "din", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t206", "title": "Fixify: تقرير أكتوبر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t207", "title": "GD: تحليل الشهر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s5t1", "title": "Forward: محاضرة زوم إلزامية", "sec": "ilm", "date": "2026-11-18", "done": false, "doneAt": null}], "checks": {}, "water": {}, "courses": [{"id": "taqat", "name": "طاقات", "short": "طاقات", "unit": "فيديو", "total": 9}, {"id": "c2c", "name": "C2C · المحاضرات المتراكمة", "short": "C2C", "unit": "محاضرة", "total": 10}, {"id": "fwd", "name": "Forward · أكاديمية ماكنزي", "short": "Forward", "unit": "الوحدة", "total": 10, "release": ["2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27", "2026-11-03", "2026-11-10", "2026-11-17", "2026-11-24", "2026-12-01", "2026-12-08"]}], "queue": ["c2c:1", "fwd:1", "taqat:1", "c2c:2", "c2c:3", "taqat:2", "taqat:3", "c2c:4", "c2c:5", "fwd:2", "taqat:4", "c2c:6", "taqat:5", "c2c:7", "c2c:8", "fwd:3", "taqat:6", "c2c:9", "c2c:10", "taqat:7", "taqat:8", "fwd:4", "taqat:9"], "units": {}, "story": [null, null, null, null, null, null], "goals": {"2026-10": [{"id": "s2g210", "title": "حفظ الدخان والجاثية (صفحة يومياً)", "sec": "din", "done": false}, {"id": "s2g211", "title": "حفظ فصلت (477–482)", "sec": "din", "done": false}, {"id": "s2g212", "title": "مراجعة الشورى والزخرف", "sec": "din", "done": false}, {"id": "s2g213", "title": "اختبار الجزء 25", "sec": "din", "done": false}, {"id": "s2g214", "title": "مذاكرة يومية للمساقات الثمانية", "sec": "ilm", "done": false}, {"id": "s2g215", "title": "C2C: المحاضرات العشر المتراكمة + ملخصاتها", "sec": "ilm", "done": false}, {"id": "s2g216", "title": "طاقات: الكورس كامل (9 فيديوهات)", "sec": "ilm", "done": false}, {"id": "s2g217", "title": "Forward: الوحدات 1–4", "sec": "ilm", "done": false}, {"id": "s2g218", "title": "Nomo: خطة آخر أسبوع + فيديوهات تيك توك + تحليل وتقرير أكتوبر", "sec": "work", "done": false}, {"id": "s2g219", "title": "Fixify: خطة + تصاميم + جدولة X + تقرير", "sec": "work", "done": false}, {"id": "s2g220", "title": "GD: خطة + جدولة X وتيك توك وميتا + تحليل", "sec": "work", "done": false}, {"id": "s2g221", "title": "العبادات اليومية: قيام، ضحى، استخارة، رقية، البقرة", "sec": "nafs", "done": false}, {"id": "s2g222", "title": "الأذكار يومياً: الصباح والمساء والنوم", "sec": "nafs", "done": false}, {"id": "s3g1", "title": "المطرة (680 مل) + الفيتامين + ترطيب الوجه يومياً", "sec": "nafs", "done": false}, {"id": "s2g223", "title": "تدوين 3 أشياء جميلة يومياً + امتنان الأسبوع", "sec": "nafs", "done": false}, {"id": "s2g224", "title": "تسليم قصة المنحة للمسابقة", "sec": "dev", "done": false}, {"id": "s2g225", "title": "لينكدإن: خطوتين بالأسبوع", "sec": "dev", "done": false}, {"id": "s2g226", "title": "دولينجو يومياً", "sec": "dev", "done": false}]}, "hifz": {"plan": [{"surah": "الدخان", "pages": [496, 497, 498]}, {"surah": "الجاثية", "pages": [499, 500, 501, 502]}, {"surah": "فصلت", "pages": [477, 478, 479, 480, 481, 482]}, {"surah": "غافر", "pages": [467, 468, 469, 470, 471, 472, 473, 474, 475, 476]}], "done": {}}};
 (function(){
 const DAYS=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
 const MONTHS=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
@@ -249,7 +253,7 @@ const ROUTINE=[["04:00","قيام الليل","c:qiyam",ALL],["05:00","أذكا�
 const SECS=[["din","ديني"],["nafs","نفسي"],["ilm","علمي"],["dev","تطوير"],["work","الشغل"]];
 const BOTTLE_ML=680;
 
-const DEFAULT={v:3,seedVersion:0,tasks:[],checks:{},water:{},courses:[],queue:[],units:{},story:[null,null,null,null,null,null],goals:{}};
+const DEFAULT={v:3,seedVersion:0,tasks:[],checks:{},water:{},courses:[],queue:[],units:{},story:[null,null,null,null,null,null],goals:{},hifz:{plan:[],done:{}}};
 let S=JSON.parse(JSON.stringify(DEFAULT)), view="today", weekOff=0, monthOff=0, ref=null, saving=false, pending=false, timer=null, lastUndo=null, ALLOC={};
 const TODAY=()=>ymd(new Date());
 
@@ -275,18 +279,23 @@ function migrate(old){
     if(/مخطط/.test(t))return 0;if(/الجزء الأول/.test(t))return 1;if(/الجزء الثاني/.test(t))return 2;if(/الجزء الثالث/.test(t))return 3;if(/تعديل|تدقيق/.test(t))return 4;if(/تسليم/.test(t))return 5;return -1};
   const SEC={quran:"din",me:"nafs",uni:"ilm",train:"ilm",dev:"dev",work:"work"};
   const titles=new Map(N.tasks.map(t=>[t.title,t]));
+  if(old.v===3){["units","checks","water"].forEach(k=>{if(old[k])N[k]=old[k]});if(Array.isArray(old.story))N.story=old.story;
+    (old.courses||[]).forEach(c=>{if(!N.courses.some(x=>x.id===c.id))N.courses.push(c)});}
+  if(old.hifz&&old.hifz.done)Object.assign(N.hifz.done,old.hifz.done);
   (old.tasks||[]).forEach(t=>{
+    const hp=t.title.match(/^حفظ جديد: .*ص (\d+)/);
+    if(hp){if(t.done&&t.doneAt&&t.doneAt>=START)N.hifz.done[hp[1]]=N.hifz.done[hp[1]]||t.doneAt;return}
     const u=unitOf(t.title),st=stepOf(t.title);
     if(u){if(t.done&&t.doneAt&&t.doneAt>=START)N.units[u]=t.doneAt;return}
     if(st>=0){if(t.done&&t.doneAt)N.story[st]=N.story[st]||t.doneAt;return}
     const same=titles.get(t.title);
     if(same){if(t.done){same.done=true;same.doneAt=t.doneAt||same.date}return}
-    if(!isSeed(t.id))N.tasks.push({id:t.id,title:t.title,sec:SEC[t.area]||"work",date:t.date||null,done:!!t.done,doneAt:t.doneAt||null});
+    if(!isSeed(t.id))N.tasks.push({id:t.id,title:t.title,sec:t.sec||SEC[t.area]||"work",date:t.date||null,done:!!t.done,doneAt:t.doneAt||null});
   });
   const KEY=[[/قيام الليل/,["qiyam"]],[/استخارة/,["istikhara"]],[/صلاة الضحى/,["duha"]],[/أذكار الصباح/,["sabah"]],[/أذكار المساء/,["masa"]],[/أذكار النوم/,["nawm"]],[/رقية/,["ruqya"]],[/سورة البقرة/,["baqara"]],[/دولينجو/,["duo"]],[/سلسلة «نور»/,["nour"]],[/لا تحزن/,["latahzan"]],[/3 أشياء/,["three"]],[/مذاكرة الجامعة/,["uni"]],[/زوم مباشر/,["zoom"]],[/ملخص زوم/,["zoomsum"]],[/لينكدإن/,["linkedin"]],[/الدعم النفسي/,["support"]],[/سراج/,["siraj"]],[/بودكاست/,["podcast"]],[/امتنان/,["gratitude"]]];
   const rTitle={};Object.values(old.routine||{}).forEach(a=>(a||[]).forEach(r=>rTitle[r.id]=r.title));
   Object.entries(old.routineDone||{}).forEach(([day,ids])=>{if(day<START)return;(ids||[]).forEach(id=>{const ti=rTitle[id]||"";KEY.forEach(([re,ks])=>{if(re.test(ti))ks.forEach(k=>{(N.checks[day]=N.checks[day]||{})[k]=true})})})});
-  Object.entries(old.goals||{}).forEach(([mk,arr])=>{const dest=N.goals[mk]=N.goals[mk]||[];(arr||[]).forEach(g=>{const same=dest.find(x=>x.title===g.title);if(same){if(g.done)same.done=true}else if(!isSeed(g.id))dest.push({id:g.id,title:g.title,sec:SEC[g.area]||"dev",done:!!g.done})})});
+  Object.entries(old.goals||{}).forEach(([mk,arr])=>{const dest=N.goals[mk]=N.goals[mk]||[];(arr||[]).forEach(g=>{const same=dest.find(x=>x.title===g.title);if(same){if(g.done)same.done=true}else if(!isSeed(g.id))dest.push({id:g.id,title:g.title,sec:g.sec||SEC[g.area]||"dev",done:!!g.done})})});
   return norm(N);
 }
 
@@ -310,6 +319,21 @@ function allocate(){
   return res;
 }
 
+/* ---------- hifz (pages) ---------- */
+const hPages=()=>S.hifz.plan.flatMap(x=>x.pages);
+const hSurah=p=>(S.hifz.plan.find(x=>x.pages.includes(+p))||{}).surah||"";
+const hDone=p=>S.hifz.done[p]||null;
+let HALLOC={};
+function allocHifz(){const T=TODAY(),P=hPages(),res={};
+  P.forEach(p=>{const d=hDone(p);if(d)(res[d]=res[d]||[]).push(p)});
+  const rem=P.filter(p=>!hDone(p));
+  if(!(res[T]||[]).length&&rem.length)res[T]=[rem.shift()];
+  let k=T;while(rem.length){k=ymd(addDays(parse(k),1));res[k]=[rem.shift()]}
+  return res}
+function hifzCard(){const T=TODAY();const P=hPages();const next=P.find(p=>!hDone(p));const d=P.filter(hDone).length;
+  return `<div class="course"><div class="t">حفظ القرآن<small>${d} من ${P.length} صفحة${next?` · الجاي: ص ${next}`:" · خلص ✓"}</small></div>${S.hifz.plan.map(x=>{const dn=x.pages.filter(hDone).length;
+    return `<div class="hs"><div class="hn">${esc(x.surah)} <small>${dn===x.pages.length?"✓":dn+"/"+x.pages.length}</small></div><div class="boxes">${x.pages.map(p=>`<button class="box pg ${hDone(p)?"on":""} ${p===next?"next":""}" data-act="h" data-p="${p}" aria-pressed="${!!hDone(p)}" aria-label="صفحة ${p}">${p}</button>`).join("")}</div></div>`}).join("")}</div>`}
+
 /* ---------- day model ---------- */
 const onDay=(days,k)=>days.includes(dow(k));
 function model(k){
@@ -317,7 +341,7 @@ function model(k){
   const ck=(key,label,extra)=>Object.assign({key,label,done:!!C[key],act:`data-act="c" data-k="${key}" data-d="${k}"`},extra||{});
   const tasksOf=sec=>S.tasks.filter(t=>t.sec===sec&&(t.date===k||(isT&&t.date&&t.date>=START&&t.date<k&&!t.done)));
   const trow=t=>({label:t.title,done:t.done,act:`data-act="t" data-id="${t.id}"`,meta:t.date<k?"متأخر":"",late:t.date<k,del:t.id});
-  const quran=tasksOf("din").map(trow);quran.push(ck("baqara","سورة البقرة"));
+  const quran=(HALLOC[k]||[]).map(p=>({label:`حفظ جديد: ${hSurah(p)} ص ${p}`,done:hDone(p)===k||(!!hDone(p)&&k<T),act:`data-act="h" data-p="${p}"`})).concat(tasksOf("din").map(trow));quran.push(ck("baqara","سورة البقرة"));
   const focus=(ALLOC[k]||[]).map((x,i)=>({u:x.u,label:unitLabel(x.u),done:doneAt(x.u)===k||(k<T&&x.done),slot:i}));
   const m={
     din:{prayers:PRAYERS.map(([a,b])=>ck(a,b)),azkar:AZKAR.map(([a,b])=>ck(a,b)),quran},
@@ -332,7 +356,7 @@ function model(k){
 }
 function routineDone(item,k,m){const key=item[2];
   if(key.startsWith("c:"))return !!m.C[key.slice(2)];
-  if(key==="hifz"){const h=S.tasks.filter(t=>t.date===k&&t.sec==="din"&&/^حفظ جديد/.test(t.title));return h.length>0&&h.every(t=>t.done)}
+  if(key==="hifz"){const h=HALLOC[k]||[];return h.length>0&&h.every(p=>hDone(p))}
   if(key==="tasmee"){const h=S.tasks.filter(t=>t.date===k&&/^تسميع/.test(t.title));return h.length?h.every(t=>t.done):!!m.C.tasmee}
   if(key==="work"){const w=m.work.rows;return w.length>0&&w.every(t=>t.done)}
   if(key==="f1")return !!(m.ilm.focus[0]&&m.ilm.focus[0].done);
@@ -340,8 +364,9 @@ function routineDone(item,k,m){const key=item[2];
   return false}
 
 /* ---------- render helpers ---------- */
+const fx=t=>esc(t).replace(/(\d+)–(\d+)/g,'<bdi dir="ltr">$1–$2</bdi>');
 const chip=x=>`<button class="chip ${x.done?"on":""}" ${x.act} aria-pressed="${x.done}">${esc(x.label)}</button>`;
-const row=x=>`<div class="row ${x.done?"done":""}"><button class="ck ${x.done?"on":""}" ${x.act} aria-label="تم: ${esc(x.label)}"></button><span class="txt">${esc(x.label)}</span>${x.meta?`<span class="meta ${x.late?"late":""}">${esc(x.meta)}</span>`:""}${x.del?`<button class="x" data-act="td" data-id="${x.del}" aria-label="حذف">×</button>`:""}</div>`;
+const row=x=>`<div class="row ${x.done?"done":""}"><button class="ck ${x.done?"on":""}" ${x.act} aria-label="تم: ${esc(x.label)}"></button><span class="txt">${fx(x.label)}</span>${x.meta?`<span class="meta ${x.late?"late":""}">${esc(x.meta)}</span>`:""}${x.del?`<button class="x" data-act="td" data-id="${x.del}" aria-label="حذف">×</button>`:""}</div>`;
 const sec=(cls,title,c,body)=>`<section class="sec ${cls}"><header>${title}<em>${c[0]} / ${c[1]}</em></header><div class="body">${body}</div></section>`;
 function bottle(n){const f=Math.min(n,1);const h=40*f;return `<svg viewBox="0 0 34 56" aria-hidden="true"><rect x="12" y="1" width="10" height="6" rx="2" fill="var(--c)"/><path d="M11 7h12v4c4 2 7 5 7 10v29a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V21c0-5 3-8 7-10z" fill="var(--paper)" stroke="var(--c)" stroke-width="2"/><clipPath id="bc"><path d="M11 7h12v4c4 2 7 5 7 10v29a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V21c0-5 3-8 7-10z"/></clipPath><rect clip-path="url(#bc)" x="0" y="${55-h}" width="34" height="${h}" fill="var(--c)" opacity=".85"/></svg>`}
 function courseCard(c,interactive){const T=TODAY();const Q=fullQueue();const next=Q.find(u=>u.startsWith(c.id+":")&&!doneAt(u));
@@ -355,7 +380,7 @@ function storyBlock(){const T=TODAY();const left=Math.round((parse(STORY_DUE)-pa
 
 /* ---------- render ---------- */
 function render(){
-  const now=new Date(),T=ymd(now);ALLOC=allocate();
+  const now=new Date(),T=ymd(now);ALLOC=allocate();HALLOC=allocHifz();
   $("date").innerHTML=esc(DAYS[now.getDay()]+" "+now.getDate()+" "+MONTHS[now.getMonth()])+"<br>"+(()=>{try{return esc(new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long"}).format(now))}catch(e){return ""}})();
   for(const b of document.querySelectorAll(".tabs button"))b.setAttribute("aria-selected",b.dataset.v===view);
   ["today","week","month"].forEach(v=>$("v-"+v).hidden=view!==v);
@@ -376,7 +401,7 @@ function renderToday(m,pct,T,now){
   const D=m.din,N=m.nafs,I=m.ilm,V=m.dev,W=m.work;
   const din=`<div><div class="lbl">الصلوات</div><div class="chips">${D.prayers.map(chip).join("")}</div></div>
     <div><div class="lbl">الأذكار</div><div class="chips">${D.azkar.map(chip).join("")}</div></div>
-    <div><div class="lbl">القرآن</div><div class="rows">${D.quran.map(row).join("")}</div></div>`;
+    <div><div class="lbl">القرآن</div><div class="rows">${D.quran.map(row).join("")}</div></div>${hifzCard()}<div class="note">علّمي على الصفحة لما تحفظيها، والخطة بتحطلك الصفحة الجاية لحالها.</div>`;
   const w=N.water;
   const nafs=`<div class="water">${bottle(w)}<div class="wt"><b>${w>=1?(w>1?`خلّصتِ ${w} مطرات ✓`:"خلّصتِ المطرة ✓"):"اشربي مطرتك"}</b><span>المطرة ${BOTTLE_ML} مل · الهدف مرة باليوم على الأقل</span></div><div class="wbtns">${w?`<button class="wbtn minus" data-act="w" data-n="-1" aria-label="ناقص مطرة">−</button>`:""}<button class="wbtn" data-act="w" data-n="1" aria-label="خلّصت مطرة">+</button></div></div>
     <div><div class="lbl">العادات</div><div class="chips">${N.habits.map(chip).join("")}</div></div>
@@ -396,15 +421,15 @@ function renderToday(m,pct,T,now){
 function renderWeek(T){
   const ws=addDays(weekStart(new Date()),weekOff*7),we=addDays(ws,6);
   $("w-title").textContent=(weekOff===0?"هذا الأسبوع · ":"")+ws.getDate()+" "+MONTHS[ws.getMonth()]+" – "+we.getDate()+" "+MONTHS[we.getMonth()];
-  let D=0,Tt=0,html="";
+  let D=0,Tt=0,html="";HALLOC=allocHifz();ALLOC=allocate();
   for(let i=0;i<7;i++){const k=ymd(addDays(ws,i));if(k<START)continue;const m=model(k);const fut=k>T;
     if(!fut){D+=m.total[0];Tt+=m.total[1]}
-    const q=S.tasks.filter(t=>t.date===k&&t.sec==="din");const wk=S.tasks.filter(t=>t.date===k&&t.sec!=="din");
+    const q=(HALLOC[k]||[]).map(p=>({title:`حفظ ${hSurah(p)} ص ${p}`,done:!!hDone(p)})).concat(S.tasks.filter(t=>t.date===k&&t.sec==="din"));const wk=S.tasks.filter(t=>t.date===k&&t.sec!=="din");
     const pr=m.din.prayers.filter(x=>x.done).length;
     html+=`<div class="card day ${k===T?"today":""}"><h3>${fmtDay(k)}<span>${fut?"جاي":Math.round(m.total[0]/(m.total[1]||1)*100)+"%"}</span></h3>
       ${m.ilm.focus.length?`<div class="mini ilm">${m.ilm.focus.map(f=>`<span class="pill ${f.done?"on":""}">${esc(f.label)}</span>`).join("")}</div>`:""}
-      ${q.length?`<div class="mini din">${q.map(t=>`<span class="pill ${t.done?"on":""}">${esc(t.title)}</span>`).join("")}</div>`:""}
-      ${wk.length?`<div class="mini work">${wk.map(t=>`<span class="pill ${t.done?"on":""}">${esc(t.title)}</span>`).join("")}</div>`:""}
+      ${q.length?`<div class="mini din">${q.map(t=>`<span class="pill ${t.done?"on":""}">${fx(t.title)}</span>`).join("")}</div>`:""}
+      ${wk.length?`<div class="mini work">${wk.map(t=>`<span class="pill ${t.done?"on":""}">${fx(t.title)}</span>`).join("")}</div>`:""}
       ${fut?"":`<div class="note">الصلوات ${pr}/8 · المطرة ${m.nafs.water>=1?"✓":"✗"} · الأذكار ${m.din.azkar.filter(x=>x.done).length}/4</div>`}</div>`}
   $("w-days").innerHTML=html||`<div class="card empty">الخطة بتبلش من الإثنين 19 أكتوبر.</div>`;
   $("w-bar").style.width=(Tt?D/Tt*100:0)+"%";$("w-sum").textContent=Tt?`أنجزتِ ${D} من ${Tt} لحد اليوم`:"";
@@ -416,7 +441,7 @@ function renderMonth(T){
   let pr=0,az=0,wt=0,all=[0,0];days.forEach(k=>{const m=model(k);pr+=m.din.prayers.filter(x=>x.done).length;az+=m.din.azkar.filter(x=>x.done).length;wt+=m.nafs.water>=1?1:0;all[0]+=m.total[0];all[1]+=m.total[1]});
   const n=days.length||1;
   $("m-stats").innerHTML=[[Math.round(all[0]/(all[1]||1)*100)+"%","إنجاز الشهر"],[Math.round(pr/(n*8)*100)+"%","الصلوات"],[Math.round(az/(n*4)*100)+"%","الأذكار"],[wt+"/"+days.length,"أيام المطرة"]].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
-  $("m-courses").innerHTML=S.courses.map(c=>courseCard(c)).join("")+storyBlock().replace('<div>','<div class="dev" style="--c:var(--dev);--s:var(--dev-s)">');
+  $("m-courses").innerHTML=`<div class="din" style="--c:var(--din);--s:var(--din-s)">${hifzCard()}</div>`+S.courses.map(c=>courseCard(c)).join("")+storyBlock().replace('<div>','<div class="dev" style="--c:var(--dev);--s:var(--dev-s)">');
   const gs=S.goals[mk]||[],gd=gs.filter(g=>g.done).length;
   $("m-bar").style.width=(gs.length?gd/gs.length*100:0)+"%";$("m-gsum").textContent=gs.length?`${gd} من ${gs.length}`:"";
   $("g-sec").innerHTML=SECS.map(([a,b])=>`<option value="${a}">${b}</option>`).join("");
@@ -433,6 +458,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(
   else if(a==="t"){const t=S.tasks.find(x=>x.id===b.dataset.id);if(!t)return;t.done=!t.done;t.doneAt=t.done?T:null}
   else if(a==="td"){const i=S.tasks.findIndex(x=>x.id===b.dataset.id);if(i<0)return;const t=S.tasks.splice(i,1)[0];toast("انحذفت المهمة",()=>S.tasks.splice(i,0,t))}
   else if(a==="f"||a==="u"){const u=b.dataset.u;if(S.units[u])delete S.units[u];else S.units[u]=T}
+  else if(a==="h"){const p=b.dataset.p;if(S.hifz.done[p])delete S.hifz.done[p];else S.hifz.done[p]=T}
   else if(a==="st"){const i=+b.dataset.i;S.story[i]=S.story[i]?null:T}
   else if(a==="g"){const mk=mkey(new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1));const g=(S.goals[mk]||[]).find(x=>x.id===b.dataset.id);if(g)g.done=!g.done}
   else return;
