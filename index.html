@@ -10,216 +10,203 @@
 <meta name="apple-mobile-web-app-title" content="دفتر نور">
 <title>دفتر نور</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marhey:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: one narrow rose-paper column, sticky header with greeting + tab strip, sections as soft cards */
+/* Layout: phone-first day page — progress ring + small routine box, then four colored section cards (ديني/نفسي/علمي/تطوير) + work; bottom tab bar. Wide screens: routine becomes a sticky sidebar. */
 :root{
-  --bg:#FFF4F7; --paper:#FFFFFF; --ink:#3B1F2E; --muted:#9A7084; --line:#F5D6E2;
-  --accent:#E0558A; --accent-2:#F49A7C; --accent-soft:#FDE2EC; --tint:#FFEAF1; --late:#C9364F; --late-soft:#FCE1E5; --on-accent:#FFFFFF;
-  --a1:#D9487D; --a2:#8A68D0; --a3:#E0844A; --a4:#2FA388; --a5:#B04FA6; --a6:#4C8BD6;
-  --display:"Marhey","IBM Plex Sans Arabic",system-ui,sans-serif;
-  --body:"IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  --bg:#FFF4F7; --paper:#FFFFFF; --ink:#3B1F2E; --muted:#9A7084; --line:#F5D6E2; --tint:#FFEAF1;
+  --accent:#E0558A; --accent-2:#F49A7C; --on:#FFFFFF; --late:#C9364F;
+  --din:#2A9A80; --din-s:#E3F5EF; --nafs:#D9487D; --nafs-s:#FDE2EC; --ilm:#7559C9; --ilm-s:#ECE6FA;
+  --dev:#D97A3F; --dev-s:#FCEBDD; --work:#A77A90; --work-s:#F6EAF0;
+  --font:"Baloo Bhaijaan 2",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#1D1018; --paper:#2A1823; --ink:#FBE9F0; --muted:#C79BAF; --line:#432636;
-  --accent:#FF86B1; --accent-2:#FFB199; --accent-soft:#3D2030; --tint:#331B29; --late:#FF8A97; --late-soft:#45202A; --on-accent:#2A0F1D;
-  --a1:#FF86B1; --a2:#B9A0F5; --a3:#FFB07A; --a4:#6FD6B9; --a5:#E79BDF; --a6:#8DBBF2; color-scheme:dark}}
+  --bg:#1D1018; --paper:#2A1823; --ink:#FBE9F0; --muted:#C79BAF; --line:#432636; --tint:#331B29;
+  --accent:#FF86B1; --accent-2:#FFB199; --on:#2A0F1D; --late:#FF8A97;
+  --din:#5FD1B4; --din-s:#173A31; --nafs:#FF86B1; --nafs-s:#3D2030; --ilm:#B4A0F5; --ilm-s:#2C2547;
+  --dev:#FFB07A; --dev-s:#3D2A1D; --work:#D9AFC3; --work-s:#3A2632; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#1D1018; --paper:#2A1823; --ink:#FBE9F0; --muted:#C79BAF; --line:#432636;
-  --accent:#FF86B1; --accent-2:#FFB199; --accent-soft:#3D2030; --tint:#331B29; --late:#FF8A97; --late-soft:#45202A; --on-accent:#2A0F1D;
-  --a1:#FF86B1; --a2:#B9A0F5; --a3:#FFB07A; --a4:#6FD6B9; --a5:#E79BDF; --a6:#8DBBF2; color-scheme:dark}
+  --bg:#1D1018; --paper:#2A1823; --ink:#FBE9F0; --muted:#C79BAF; --line:#432636; --tint:#331B29;
+  --accent:#FF86B1; --accent-2:#FFB199; --on:#2A0F1D; --late:#FF8A97;
+  --din:#5FD1B4; --din-s:#173A31; --nafs:#FF86B1; --nafs-s:#3D2030; --ilm:#B4A0F5; --ilm-s:#2C2547;
+  --dev:#FFB07A; --dev-s:#3D2A1D; --work:#D9AFC3; --work-s:#3A2632; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{margin:0}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 120px}
-header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px 0}
-.hrow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
-h1{font-family:var(--display);font-size:28px;margin:0;line-height:1.2;display:flex;align-items:center;gap:8px;color:var(--accent)}
-h1 svg{width:30px;height:30px;flex:none;animation:sway 6s ease-in-out infinite}
-@keyframes sway{50%{transform:rotate(18deg)}}
-.dates{color:var(--muted);font-size:13px}
-.hello{margin:4px 0 0;font-family:var(--display);font-size:16px;color:var(--ink)}
-.hello span{color:var(--muted);font-family:var(--body);font-size:13px}
-.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:10px;background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:4px}
-.tabs button{font:inherit;font-weight:600;border:0;background:transparent;color:var(--muted);padding:8px 4px;border-radius:99px;cursor:pointer;transition:background .2s}
-.tabs button[aria-selected="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);box-shadow:0 4px 12px -6px var(--accent)}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-section.view{display:flex;flex-direction:column;gap:18px;margin-top:16px}
-.page{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:16px 16px 12px;box-shadow:0 6px 18px -14px var(--accent)}
-.page h2{font-family:var(--display);font-size:18px;margin:0 0 6px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;text-wrap:balance}
-.page h2 small{font-family:var(--body);font-size:12px;color:var(--muted);font-weight:500}
-.lbl{font-size:12px;letter-spacing:.02em;color:var(--muted);font-weight:600;margin:10px 0 2px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.stat{background:var(--tint);border:1px solid var(--line);border-radius:18px;padding:12px 8px;text-align:center}
-.stat:nth-child(2){background:var(--accent-soft)}
-.stat b{display:block;font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums;color:var(--accent)}
-.stat span{font-size:12px;color:var(--muted)}
-.bar{height:8px;border-radius:99px;background:var(--accent-soft);overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));border-radius:99px;transition:width .4s}
-ul.list{list-style:none;margin:0;padding:0}
-ul.list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);min-width:0}
-ul.list li:last-child{border-bottom:0}
-.chk{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--accent);background:transparent;cursor:pointer;display:grid;place-items:center;padding:0;color:var(--on-accent);transition:transform .15s}
-.chk:active{transform:scale(.85)}
-.chk.on{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent}
-.chk.on::after{content:"";width:9px;height:5px;border:2px solid currentColor;border-top:0;border-left:0;transform:rotate(-45deg) translate(-1px,-1px) scaleX(-1)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px calc(96px + env(safe-area-inset-bottom,0px))}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+h1{margin:0;font-size:28px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:6px;line-height:1.2}
+h1 svg{width:28px;height:28px;animation:sway 6s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(18deg)}}
+.date{color:var(--muted);font-size:12.5px;text-align:left;line-height:1.35}
+.hello{margin:2px 0 14px;font-size:17px;font-weight:700}
+.hello span{font-weight:400;color:var(--muted);font-size:14px}
+
+.view{display:flex;flex-direction:column;gap:14px}
+.grid{display:grid;gap:14px}
+.top{display:grid;grid-template-columns:1fr 1.3fr;gap:10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px 14px;box-shadow:0 6px 16px -14px var(--accent)}
+.ring{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(160deg,var(--paper),var(--tint))}
+.ring svg{width:104px;height:104px}
+.ring small{color:var(--muted);font-size:13px}
+.rt h3{margin:0 0 4px;font-size:14px;color:var(--accent)}
+.rt ul{list-style:none;margin:0;padding:0}
+.rt li{display:flex;gap:7px;align-items:center;padding:1px 4px;margin:0 -4px;font-size:13px;border-radius:8px}
+.rt li b{font-weight:400;color:var(--muted);width:38px;flex:none;font-variant-numeric:tabular-nums;font-size:12px}
+.rt li i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--accent);flex:none}
+.rt li.d i{background:var(--accent)}
+.rt li.d span{color:var(--muted);text-decoration:line-through}
+.rt li.now{background:var(--tint);font-weight:700}
+
+.sec{border-radius:22px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.sec>header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;color:var(--paper);font-weight:800;font-size:18px;background:var(--c)}
+.sec>header em{font-style:normal;font-size:13px;font-weight:600;background:color-mix(in srgb,var(--paper) 28%,transparent);padding:1px 10px;border-radius:99px;font-variant-numeric:tabular-nums}
+.din{--c:var(--din);--s:var(--din-s)} .nafs{--c:var(--nafs);--s:var(--nafs-s)} .ilm{--c:var(--ilm);--s:var(--ilm-s)} .dev{--c:var(--dev);--s:var(--dev-s)} .work{--c:var(--work);--s:var(--work-s)}
+.body{padding:10px 16px 14px;display:flex;flex-direction:column;gap:12px}
+.lbl{font-size:13px;color:var(--muted);font-weight:700;margin-bottom:5px;display:flex;justify-content:space-between;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--c);color:var(--c);background:transparent;border-radius:99px;padding:3px 13px;font-size:14px;font-weight:600;transition:background .15s,color .15s}
+.chip.on{background:var(--c);color:var(--paper)}
+.chip:active{transform:scale(.95)}
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);min-width:0}
+.row:last-child{border-bottom:0}
+.ck{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--c);background:transparent;display:grid;place-items:center;padding:0;color:var(--paper)}
+.ck.on{background:var(--c)}
+.ck.on::after{content:"";width:9px;height:5px;border:2px solid currentColor;border-top:0;border-right:0;transform:rotate(-45deg) translate(0,-1px)}
+.ck:active{transform:scale(.88)}
 .txt{flex:1;min-width:0;overflow-wrap:anywhere}
-li.done .txt{color:var(--muted);text-decoration:line-through}
-.tag{flex:none;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
-.time{flex:none;font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:44px}
-.due{font-size:11px;color:var(--muted);display:block}
-.due.late{color:var(--late);font-weight:600}
-.x{flex:none;border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:6px}
-.x:hover{background:var(--late-soft);color:var(--late)}
-.empty{color:var(--muted);font-size:13px;padding:8px 0}
-.add{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.add input[type=text]{flex:1 1 180px;min-width:0}
-input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:7px 9px}
-input[type=time]{width:96px}
-.btn{font:inherit;font-weight:600;border:0;border-radius:99px;padding:7px 16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);cursor:pointer}
-.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.row.done .txt{color:var(--muted);text-decoration:line-through}
+.meta{flex:none;color:var(--muted);font-size:12px}
+.meta.late{color:var(--late);font-weight:700}
+.x{flex:none;border:0;background:transparent;color:var(--muted);font-size:18px;line-height:1;padding:2px 6px;border-radius:6px}
+.empty{color:var(--muted);font-size:13px}
+
+.water{display:flex;align-items:center;gap:12px;background:var(--s);border-radius:16px;padding:8px 12px}
+.water svg{width:34px;height:56px;flex:none}
+.water .wt{flex:1;min-width:0}
+.water .wt b{display:block;font-size:15px}
+.water .wt span{font-size:12.5px;color:var(--muted)}
+.wbtns{display:flex;gap:6px}
+.wbtn{width:34px;height:34px;border-radius:50%;border:0;background:var(--c);color:var(--paper);font-size:20px;font-weight:700;line-height:1;display:grid;place-items:center;padding:0}
+.wbtn.minus{background:transparent;color:var(--c);border:1.5px solid var(--c)}
+
+.focus{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.fc{display:flex;gap:8px;align-items:center;text-align:right;background:var(--s);border:0;border-radius:14px;padding:8px 10px;min-width:0}
+.fc .t{flex:1;min-width:0}
+.fc small{display:block;font-size:11.5px;color:var(--c);font-weight:700}
+.fc span{font-size:14.5px;font-weight:700}
+.fc.done span{color:var(--muted);text-decoration:line-through}
+.course{border:1px solid var(--s);border-radius:14px;padding:8px 10px;background:color-mix(in srgb,var(--s) 35%,var(--paper))}
+.course .t{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:700;font-size:14.5px;margin-bottom:6px}
+.course .t small{color:var(--muted);font-weight:400;font-size:12px}
+.boxes{display:flex;flex-wrap:wrap;gap:6px}
+.box{width:32px;height:32px;border-radius:10px;border:1.5px solid var(--c);color:var(--c);background:transparent;display:grid;place-items:center;font-size:14px;font-weight:700;padding:0;font-variant-numeric:tabular-nums}
+.box.on{background:var(--c);color:var(--paper)}
+.box.next{border-width:2.5px;box-shadow:0 0 0 3px var(--s)}
+.box.locked{opacity:.45}
+.note{font-size:12.5px;color:var(--muted)}
+.steps{display:flex;gap:5px}
+.step{flex:1;min-width:0;border:0;font-size:12.5px;font-weight:600;padding:5px 0;border-radius:9px;background:var(--s);color:var(--c)}
+.step.on{background:var(--c);color:var(--paper)}
+
+.bar{height:9px;border-radius:99px;background:var(--tint);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .4s}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.nav b{font-family:var(--display);font-size:17px}
-.nav button{font:inherit;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:9px;padding:5px 12px;cursor:pointer}
-.day{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}
-.day:first-of-type{border-top:0;margin-top:0;padding-top:0}
-.day h3{margin:0;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.nav b{font-size:18px}
+.nav button{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:4px 14px}
+.day{display:flex;flex-direction:column;gap:6px}
+.day h3{margin:0;font-size:16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .day.today h3{color:var(--accent)}
-.day h3 span{color:var(--muted);font-weight:500;font-size:12px}
-.areas{display:flex;flex-wrap:wrap;gap:6px}
-.areas .tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:4px 4px 4px 10px}
-.areas .tag button{border:0;background:transparent;color:inherit;cursor:pointer;font-size:14px;line-height:1;padding:0 4px}
-.byarea{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.byarea div{display:grid;grid-template-columns:90px 1fr 34px;gap:8px;align-items:center;font-size:13px}
-.byarea .bar{margin:0}
-.byarea em{font-style:normal;text-align:left;font-variant-numeric:tabular-nums;color:var(--muted)}
-.toast{position:fixed;inset:auto 0 calc(16px + env(safe-area-inset-bottom,0px));margin:auto;width:max-content;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;font-size:14px;z-index:20}
-.toast button{font:inherit;font-weight:600;background:transparent;border:0;color:var(--accent-soft);cursor:pointer;text-decoration:underline}
-.sync{font-size:11px;color:var(--muted)}
-details summary{cursor:pointer;color:var(--accent);font-weight:600;font-size:13px;margin-top:6px}
+.day h3 span{font-size:12.5px;color:var(--muted);font-weight:500}
+.mini{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12.5px;border-radius:99px;padding:1px 10px;background:var(--s);color:var(--c);font-weight:600}
+.pill.on{background:var(--c);color:var(--paper)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.stat{background:var(--tint);border-radius:16px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{font-size:12.5px;color:var(--muted)}
+
+.add{display:flex;flex-wrap:wrap;gap:6px}
+.add input[type=text]{flex:1 1 180px;min-width:0}
+input,select{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:6px 10px}
+.btn{border:0;border-radius:99px;padding:6px 18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on)}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+details>summary{cursor:pointer;color:var(--accent);font-weight:700;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+.sync{font-size:12px;color:var(--muted);text-align:center}
+
+.tabs{position:fixed;inset:auto 0 0 0;z-index:15;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px max(12px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.tabs div{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tabs button{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:16px;padding:7px;border-radius:99px}
+.tabs button[aria-selected="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on)}
+.toast{position:fixed;inset:auto 0 calc(80px + env(safe-area-inset-bottom,0px));margin:auto;width:max-content;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:14px;display:flex;gap:12px;align-items:center;z-index:20}
+.toast button{background:transparent;border:0;color:var(--accent-2);font-weight:700;text-decoration:underline}
 .login{position:fixed;inset:0;z-index:30;background:var(--bg);display:grid;place-items:center;padding:16px}
-.login .page{max-width:360px;text-align:center}
-.star{color:var(--accent);font-weight:700}
+.login .card{max-width:360px;text-align:center;padding:22px}
+
+@media (min-width:900px){
+  .today-grid{display:grid;grid-template-columns:1fr 290px;gap:16px;align-items:start}
+  .side{position:sticky;top:14px;display:flex;flex-direction:column;gap:12px}
+  .side .top{grid-template-columns:1fr}
+  .secs{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+}
+@media (max-width:899px){.today-grid{display:flex;flex-direction:column;gap:14px}.secs{display:flex;flex-direction:column;gap:14px}.side{order:-1}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-
-
-<div class="wrap" dir="rtl" lang="ar">
-  <header class="top">
-    <div class="hrow">
-      <h1><svg viewBox="0 0 40 40" aria-hidden="true"><g fill="var(--accent)" opacity=".85"><circle cx="20" cy="10" r="7"/><circle cx="29.5" cy="17" r="7"/><circle cx="26" cy="28" r="7"/><circle cx="14" cy="28" r="7"/><circle cx="10.5" cy="17" r="7"/></g><circle cx="20" cy="20" r="5" fill="var(--accent-2)"/></svg>دفتر نور</h1>
-      <div class="dates"><span id="gdate"></span> · <span id="hdate"></span></div>
-    </div>
-    <p class="hello" id="hello"></p>
-    <div class="tabs" role="tablist">
-      <button role="tab" id="tab-today" data-v="today" aria-selected="true">اليوم</button>
-      <button role="tab" id="tab-week" data-v="week" aria-selected="false">الأسبوع</button>
-      <button role="tab" id="tab-month" data-v="month" aria-selected="false">أهداف الشهر</button>
-    </div>
-  </header>
+<div class="wrap">
+  <div class="head">
+    <h1><svg viewBox="0 0 40 40" aria-hidden="true"><g fill="var(--accent)" opacity=".85"><circle cx="20" cy="10" r="7"/><circle cx="29.5" cy="17" r="7"/><circle cx="26" cy="28" r="7"/><circle cx="14" cy="28" r="7"/><circle cx="10.5" cy="17" r="7"/></g><circle cx="20" cy="20" r="5" fill="var(--accent-2)"/></svg>دفتر نور</h1>
+    <div class="date" id="date"></div>
+  </div>
+  <p class="hello" id="hello"></p>
 
   <!-- TODAY -->
   <section class="view" id="v-today">
-    <div class="stats">
-      <div class="stat"><b id="s-tasks">0/0</b><span>الأساسيات</span></div>
-      <div class="stat"><b id="s-routine">0/0</b><span>روتين اليوم</span></div>
-      <div class="stat"><b id="s-goals">0%</b><span>أهداف الشهر</span></div>
-    </div>
-
-    <div class="page">
-      <h2>شو عليّ؟ <small id="today-sub"></small></h2>
-      <form class="add" id="f-task">
-        <input type="text" id="t-title" placeholder="اكتبي المهمة وانتهينا…" autocomplete="off" required>
-        <select id="t-area" aria-label="الجهة"></select>
-        <select id="t-when" aria-label="الموعد">
-          <option value="today">اليوم</option>
-          <option value="tomorrow">بكرا</option>
-          <option value="week">آخر الأسبوع</option>
-          <option value="date">تاريخ…</option>
-          <option value="none">بدون موعد</option>
-        </select>
-        <select id="t-pri" aria-label="الأولوية"><option value="quick">سريعة</option><option value="main">★ أساسية</option></select>
-        <input type="date" id="t-date" hidden aria-label="التاريخ">
-        <button class="btn" type="submit">إضافة</button>
-      </form>
-      <div id="late-wrap" hidden><div class="lbl" style="color:var(--late)">متأخر</div><ul class="list" id="l-late"></ul></div>
-      <div class="lbl">★ الأساسيات (الأولوية)</div>
-      <ul class="list" id="l-today"></ul>
-      <div class="lbl">مهام سريعة</div>
-      <ul class="list" id="l-quick"></ul>
-      <div class="lbl">بدون موعد (صندوق الأفكار)</div>
-      <ul class="list" id="l-inbox"></ul>
-    </div>
-
-    <div class="page">
-      <h2>روتين اليوم <small id="routine-day"></small></h2>
-      <ul class="list" id="l-routine"></ul>
-    </div>
-
-    <div class="page" id="done-today-page">
-      <h2>أنجزتِ اليوم <small id="done-count"></small></h2>
-      <ul class="list" id="l-donetoday"></ul>
+    <div class="today-grid">
+      <div class="secs" id="secs"></div>
+      <aside class="side"><div class="top" id="top"></div></aside>
     </div>
   </section>
 
   <!-- WEEK -->
   <section class="view" id="v-week" hidden>
-    <div class="page">
-      <div class="nav"><button id="w-prev" aria-label="الأسبوع السابق">→</button><b id="w-title"></b><button id="w-next" aria-label="الأسبوع التالي">←</button></div>
-      <div class="bar" style="margin-top:10px"><i id="w-bar"></i></div>
-      <div class="sync" id="w-sum" style="margin-top:4px"></div>
-    </div>
-    <div class="page" id="w-days"></div>
-    <div class="page">
-      <h2>الروتين الأسبوعي الثابت <small>يتكرر كل أسبوع</small></h2>
-      <div class="add" id="f-routine">
-        <select id="r-day" aria-label="اليوم"></select>
-        <input type="time" id="r-time" aria-label="الوقت">
-        <input type="text" id="r-title" placeholder="مثال: محاضرة / حلقة تحفيظ / تدريب" autocomplete="off">
-        <select id="r-area" aria-label="الجهة"></select>
-        <button class="btn" type="button" id="r-add">إضافة</button>
-      </div>
-      <div id="r-list"></div>
-    </div>
+    <div class="card"><div class="nav"><button id="w-prev" aria-label="الأسبوع السابق">→</button><b id="w-title"></b><button id="w-next" aria-label="الأسبوع التالي">←</button></div>
+      <div class="bar" style="margin-top:10px"><i id="w-bar"></i></div><div class="note" id="w-sum" style="margin-top:4px"></div></div>
+    <div class="grid" id="w-days"></div>
   </section>
 
   <!-- MONTH -->
   <section class="view" id="v-month" hidden>
-    <div class="page">
-      <div class="nav"><button id="m-prev" aria-label="الشهر السابق">→</button><b id="m-title"></b><button id="m-next" aria-label="الشهر التالي">←</button></div>
-      <div class="bar" style="margin-top:10px"><i id="m-bar"></i></div>
-      <div class="sync" id="m-sum" style="margin-top:4px"></div>
+    <div class="card"><div class="nav"><button id="m-prev" aria-label="الشهر السابق">→</button><b id="m-title"></b><button id="m-next" aria-label="الشهر التالي">←</button></div></div>
+    <div class="stats" id="m-stats"></div>
+    <div class="sec ilm"><header>الكورسات</header><div class="body" id="m-courses"></div></div>
+    <div class="card"><div class="lbl" style="font-size:16px;color:var(--ink)">أهداف الشهر <span id="m-gsum"></span></div>
+      <div class="bar"><i id="m-bar"></i></div>
+      <div id="g-list" style="margin-top:8px"></div>
+      <form class="add" id="f-goal" style="margin-top:8px"><input type="text" id="g-title" placeholder="هدف جديد لهالشهر" autocomplete="off" required><select id="g-sec" aria-label="القسم"></select><button class="btn" type="submit">إضافة</button></form>
+      <div id="carry-wrap" hidden style="margin-top:8px"><button class="btn ghost" id="carry" type="button">انقلي اللي ما خلص للشهر الجاي</button></div>
     </div>
-    <div class="page">
-      <h2>أهداف الشهر</h2>
-      <form class="add" id="f-goal">
-        <input type="text" id="g-title" placeholder="هدف لهذا الشهر" autocomplete="off" required>
-        <select id="g-area" aria-label="الجهة"></select>
-        <button class="btn" type="submit">إضافة</button>
-      </form>
-      <div id="g-list"></div>
-      <div style="margin-top:10px" id="carry-wrap" hidden><button class="btn ghost" id="carry" type="button">انقلي اللي ما خلص للشهر الجاي</button></div>
-    </div>
-    <div class="page">
-      <h2>شو أنجزت هالشهر <small id="m-done-n"></small></h2>
-      <div class="byarea" id="m-byarea"></div>
-      <details><summary>عرض كل المهام المنجزة</summary><ul class="list" id="m-donelist"></ul></details>
-    </div>
-    <div class="page">
-      <h2>الجهات</h2>
-      <div class="areas" id="a-list"></div>
-      <div class="add"><input type="text" id="a-name" placeholder="جهة جديدة (مثلاً: Smart Spend)" autocomplete="off"><button class="btn" type="button" id="a-add">إضافة</button></div>
-    </div>
+    <div class="card"><details><summary>+ إضافة كورس جديد</summary>
+      <form class="add" id="f-course" style="margin-top:8px"><input type="text" id="c-name" placeholder="اسم الكورس" autocomplete="off" required><input type="text" id="c-unit" placeholder="محاضرة / فيديو" autocomplete="off" style="flex:0 1 120px"><input type="number" id="c-total" min="1" max="60" value="5" aria-label="العدد" style="width:72px"><button class="btn" type="submit">إضافة</button></form></details></div>
     <div class="sync" id="sync"></div>
-    <button class="btn ghost" id="logout" type="button" hidden>تسجيل خروج</button>
+    <div style="text-align:center"><button class="btn ghost" id="logout" type="button" hidden>تسجيل خروج</button></div>
   </section>
 </div>
-<div class="login" id="login"><div class="page"><h2>أهلاً يا نور</h2><p>ادخلي بحساب Google عشان تنحفظ خطتك وتفتحيها من أي جهاز.</p><button class="btn" id="login-btn" type="button">دخول بحساب Google</button><p class="sync" id="login-err"></p></div></div>
+
+<nav class="tabs" role="tablist"><div>
+  <button role="tab" data-v="today" id="tab-today" aria-selected="true">اليوم</button>
+  <button role="tab" data-v="week" id="tab-week" aria-selected="false">الأسبوع</button>
+  <button role="tab" data-v="month" id="tab-month" aria-selected="false">الشهر</button>
+</div></nav>
 <div class="toast" id="toast" hidden><span id="toast-msg"></span><button id="toast-undo" type="button">تراجع</button></div>
+<div class="login" id="login"><div class="card"><h2 style="margin:0 0 6px">أهلاً يا نور</h2><p>ادخلي بحساب Google عشان تنحفظ خطتك وتفتحيها من أي جهاز.</p><button class="btn" id="login-btn" type="button">دخول بحساب Google</button><p class="note" id="login-err"></p></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -233,43 +220,249 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "510635677020",
   appId: "1:510635677020:web:4b738485c973dc069a9d99"
 };
-const SEED = {"v": 1, "seedVersion": 2, "areas": [{"id": "quran", "name": "التحفيظ", "c": 3}, {"id": "uni", "name": "الجامعة", "c": 1}, {"id": "train", "name": "التدريبات", "c": 2}, {"id": "work", "name": "الشغل", "c": 0}, {"id": "me", "name": "روحي ونفسي", "c": 4}, {"id": "dev", "name": "تطوير ومشاريع", "c": 5}], "tasks": [{"id": "s2t132", "title": "حفظ جديد: الدخان ص 496", "area": "quran", "date": "2026-10-19", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t133", "title": "مراجعة: الشورى ص 483–484", "area": "quran", "date": "2026-10-19", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t134", "title": "① C2C: محاضرة متراكمة 1 + ملخصها", "area": "train", "date": "2026-10-19", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t135", "title": "② Forward: افهمي النظام + الوحدة 1", "area": "train", "date": "2026-10-19", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t136", "title": "Nomo: خطة محتوى آخر أسبوع بأكتوبر", "area": "work", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t137", "title": "حفظ جديد: الدخان ص 497", "area": "quran", "date": "2026-10-20", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t138", "title": "مراجعة: الشورى ص 485–486", "area": "quran", "date": "2026-10-20", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t139", "title": "تسميع: الدخان ص 496–497 + الشورى 483–486", "area": "quran", "date": "2026-10-20", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t140", "title": "① طاقات: فيديو 1 من 9", "area": "train", "date": "2026-10-20", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t141", "title": "② C2C: محاضرة متراكمة 2 + ملخصها", "area": "train", "date": "2026-10-20", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t142", "title": "Nomo: اختيار فيديوهات تيك توك حسب الخطة", "area": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t143", "title": "Fixify: كتابة الخطة", "area": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t144", "title": "القصة: مخطط المشاهد (الفوز بالمنحة ← رفح ← القبول ← المعبر)", "area": "dev", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t145", "title": "حفظ جديد: الدخان ص 498", "area": "quran", "date": "2026-10-21", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t146", "title": "مراجعة: الشورى ص 487–489", "area": "quran", "date": "2026-10-21", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t147", "title": "① C2C: محاضرة متراكمة 3 + ملخصها", "area": "train", "date": "2026-10-21", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t148", "title": "② طاقات: فيديو 2 من 9", "area": "train", "date": "2026-10-21", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t149", "title": "GD: خطة المحتوى (مع WhatsApp Orders قبل فعالية المطاعم)", "area": "work", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t150", "title": "القصة: كتابة الجزء الأول (المنحة)", "area": "dev", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t151", "title": "حفظ جديد: الجاثية ص 499", "area": "quran", "date": "2026-10-22", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t152", "title": "مراجعة: الزخرف ص 489–490", "area": "quran", "date": "2026-10-22", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t153", "title": "تسميع: الدخان كاملة (496–498)", "area": "quran", "date": "2026-10-22", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t154", "title": "① طاقات: فيديو 3 من 9", "area": "train", "date": "2026-10-22", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t155", "title": "② C2C: محاضرة متراكمة 4 + ملخصها", "area": "train", "date": "2026-10-22", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t156", "title": "Fixify: تصميم البوسترات", "area": "work", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t157", "title": "حفظ جديد: الجاثية ص 500", "area": "quran", "date": "2026-10-23", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t158", "title": "مراجعة: الزخرف ص 491–492", "area": "quran", "date": "2026-10-23", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t159", "title": "① C2C: محاضرة متراكمة 5 + ملخصها", "area": "train", "date": "2026-10-23", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t160", "title": "Forward: الوحدة 2 (خفيفة، يوم الجمعة)", "area": "train", "date": "2026-10-23", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t161", "title": "حفظ جديد: الجاثية ص 501", "area": "quran", "date": "2026-10-24", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t162", "title": "مراجعة: الزخرف ص 493–495", "area": "quran", "date": "2026-10-24", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t163", "title": "① طاقات: فيديو 4 من 9", "area": "train", "date": "2026-10-24", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t164", "title": "② C2C: محاضرة متراكمة 6 + ملخصها", "area": "train", "date": "2026-10-24", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t165", "title": "GD: جدولة/نشر الأسبوع على X وتيك توك وميتا بزنس", "area": "work", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t166", "title": "القصة: كتابة الجزء الثاني (رفح والمقابلة)", "area": "dev", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t167", "title": "حفظ جديد: الجاثية ص 502", "area": "quran", "date": "2026-10-25", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t168", "title": "مراجعة: الدخان كاملة (496–498)", "area": "quran", "date": "2026-10-25", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t169", "title": "تسميع: الجاثية كاملة (499–502)", "area": "quran", "date": "2026-10-25", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t170", "title": "① طاقات: فيديو 5 من 9", "area": "train", "date": "2026-10-25", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t171", "title": "② C2C: محاضرة متراكمة 7 + ملخصها", "area": "train", "date": "2026-10-25", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t172", "title": "Fixify: تصميم الكاروسيلات", "area": "work", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t173", "title": "القصة: كتابة الجزء الثالث (القبول والمعبر)", "area": "dev", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t174", "title": "حفظ جديد: فصلت ص 477", "area": "quran", "date": "2026-10-26", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t175", "title": "مراجعة: الشورى كاملة (483–489)", "area": "quran", "date": "2026-10-26", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t176", "title": "① C2C: محاضرة متراكمة 8 + ملخصها", "area": "train", "date": "2026-10-26", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t177", "title": "② Forward: الوحدة 3", "area": "train", "date": "2026-10-26", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t178", "title": "Fixify: جدولة المحتوى على X", "area": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t179", "title": "GD: متابعة التحليل (أداء الأسبوع)", "area": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t180", "title": "حفظ جديد: فصلت ص 478", "area": "quran", "date": "2026-10-27", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t181", "title": "مراجعة: الزخرف كاملة (489–495)", "area": "quran", "date": "2026-10-27", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t182", "title": "تسميع: فصلت 477–478 + مراجعة الشورى", "area": "quran", "date": "2026-10-27", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t183", "title": "① طاقات: فيديو 6 من 9", "area": "train", "date": "2026-10-27", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t184", "title": "② C2C: محاضرة متراكمة 9 + ملخصها", "area": "train", "date": "2026-10-27", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t185", "title": "القصة: قراءة كاملة وتعديل", "area": "dev", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t186", "title": "حفظ جديد: فصلت ص 479", "area": "quran", "date": "2026-10-28", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t187", "title": "مراجعة الجزء 25 كامل (482–502) تجهيزاً للاختبار", "area": "quran", "date": "2026-10-28", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t188", "title": "① C2C: محاضرة متراكمة 10 + ملخصها", "area": "train", "date": "2026-10-28", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t189", "title": "② طاقات: فيديو 7 من 9", "area": "train", "date": "2026-10-28", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t190", "title": "Nomo: تحليل محتوى أكتوبر (تيك توك + X)", "area": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t191", "title": "GD: جدولة الأسبوع الجاي (X + تيك توك + ميتا)", "area": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t192", "title": "حفظ جديد: فصلت ص 480", "area": "quran", "date": "2026-10-29", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t193", "title": "مراجعة خفيفة قبل الاختبار: الدخان + الجاثية", "area": "quran", "date": "2026-10-29", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t194", "title": "اختبار الجزء 25 (لو موعده غير، انقليه)", "area": "quran", "date": "2026-10-29", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t195", "title": "① طاقات: فيديو 8 من 9", "area": "train", "date": "2026-10-29", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t196", "title": "② Forward: الوحدة 4", "area": "train", "date": "2026-10-29", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t197", "title": "القصة: التدقيق النهائي", "area": "dev", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t198", "title": "حفظ جديد: فصلت ص 481", "area": "quran", "date": "2026-10-30", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t199", "title": "مراجعة: فصلت 477–480", "area": "quran", "date": "2026-10-30", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t200", "title": "① طاقات: فيديو 9 من 9 (آخر فيديو)", "area": "train", "date": "2026-10-30", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t201", "title": "Nomo: كتابة تقرير أكتوبر", "area": "work", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t202", "title": "حفظ جديد: فصلت ص 482", "area": "quran", "date": "2026-10-31", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t203", "title": "مراجعة: فصلت 477–482", "area": "quran", "date": "2026-10-31", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t204", "title": "① يوم تعويض: أي محاضرة أو فيديو تأخر", "area": "train", "date": "2026-10-31", "done": false, "doneAt": null, "pri": "main"}, {"id": "s2t205", "title": "القصة: تسليمها للمسابقة (آخر موعد 1 نوفمبر)", "area": "dev", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t206", "title": "Fixify: تقرير أكتوبر", "area": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t207", "title": "GD: تحليل الشهر", "area": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t208", "title": "طاقات: الكورسات الجاية (لاحقاً)", "area": "train", "date": null, "done": false, "doneAt": null}, {"id": "s2t209", "title": "حفظ غافر (نوفمبر)", "area": "quran", "date": null, "done": false, "doneAt": null}], "routine": {"0": [{"id": "s2r1", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r8", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r15", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r22", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r29", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r36", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r43", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r53", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r59", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r65", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r72", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r79", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r88", "time": "20:00", "title": "تسميع التحفيظ (8:00–9:30 مساءً)", "area": "quran", "pri": "main"}, {"id": "s2r93", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r100", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r107", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r114", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r121", "time": "22:25", "title": "أذكار النوم", "area": "me"}], "1": [{"id": "s2r2", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r9", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r16", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r23", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r30", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r37", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r44", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r50", "time": "10:00", "title": "C2C زوم مباشر (10:00–1:00)", "area": "train", "pri": "main"}, {"id": "s2r54", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r60", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r66", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r73", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r80", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r85", "time": "20:00", "title": "C2C: ملخص زوم اليوم", "area": "train", "pri": "main"}, {"id": "s2r91", "time": "21:15", "title": "لينكدإن: خطوة صغيرة (15 دقيقة)", "area": "dev"}, {"id": "s2r94", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r101", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r108", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r115", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r122", "time": "22:25", "title": "أذكار النوم", "area": "me"}], "2": [{"id": "s2r3", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r10", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r17", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r24", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r31", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r38", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r45", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r55", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r61", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r67", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r74", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r81", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r89", "time": "20:00", "title": "تسميع التحفيظ (8:00–9:30 مساءً)", "area": "quran", "pri": "main"}, {"id": "s2r95", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r102", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r109", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r116", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r123", "time": "22:25", "title": "أذكار النوم", "area": "me"}], "3": [{"id": "s2r4", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r11", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r18", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r25", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r32", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r39", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r46", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r51", "time": "10:00", "title": "C2C زوم مباشر (10:00–1:00)", "area": "train", "pri": "main"}, {"id": "s2r56", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r62", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r68", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r75", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r82", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r86", "time": "20:00", "title": "C2C: ملخص زوم اليوم", "area": "train", "pri": "main"}, {"id": "s2r96", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r103", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r110", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r117", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r124", "time": "22:25", "title": "أذكار النوم", "area": "me"}], "4": [{"id": "s2r5", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r12", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r19", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r26", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r33", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r40", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r47", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r57", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r63", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r69", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r76", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r83", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r90", "time": "20:00", "title": "تسميع التحفيظ (8:00–9:30 مساءً)", "area": "quran", "pri": "main"}, {"id": "s2r97", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r104", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r111", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r118", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r125", "time": "22:25", "title": "أذكار النوم", "area": "me"}, {"id": "s2r128", "time": "", "title": "جلسة الدعم النفسي مع C2C", "area": "me"}], "5": [{"id": "s2r6", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r13", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r20", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r27", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r34", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r41", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r48", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r70", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r77", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r92", "time": "21:15", "title": "لينكدإن: خطوة صغيرة (15 دقيقة)", "area": "dev"}, {"id": "s2r98", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r105", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r112", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r119", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r126", "time": "22:25", "title": "أذكار النوم", "area": "me"}, {"id": "s2r129", "time": "10:00", "title": "جلسة دعم على تطبيق سراج", "area": "me"}, {"id": "s2r130", "time": "15:00", "title": "بودكاست محمد الغليظ", "area": "me"}, {"id": "s2r131", "time": "21:00", "title": "تدوين امتنان الأسبوع", "area": "me"}], "6": [{"id": "s2r7", "time": "04:00", "title": "قيام الليل", "area": "me"}, {"id": "s2r14", "time": "05:00", "title": "أذكار الصباح", "area": "me"}, {"id": "s2r21", "time": "05:10", "title": "رقية شرعية", "area": "me"}, {"id": "s2r28", "time": "05:20", "title": "الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)", "area": "quran", "pri": "main"}, {"id": "s2r35", "time": "06:30", "title": "وقت التركيز ① (المهمة الأساسية الأولى بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r42", "time": "09:30", "title": "صلاة الضحى", "area": "me"}, {"id": "s2r49", "time": "09:45", "title": "صلاة الاستخارة", "area": "me"}, {"id": "s2r52", "time": "10:00", "title": "C2C زوم مباشر (10:00–1:00)", "area": "train", "pri": "main"}, {"id": "s2r58", "time": "13:30", "title": "شغل العملاء (ساعتين)", "area": "work"}, {"id": "s2r64", "time": "15:45", "title": "وقت التركيز ② (المهمة الأساسية التانية بالمهام)", "area": "train", "pri": "main"}, {"id": "s2r71", "time": "16:30", "title": "أذكار المساء", "area": "me"}, {"id": "s2r78", "time": "17:15", "title": "سورة البقرة", "area": "me"}, {"id": "s2r84", "time": "18:30", "title": "مذاكرة الجامعة (ساعة ونص)", "area": "uni", "pri": "main"}, {"id": "s2r87", "time": "20:00", "title": "C2C: ملخص زوم اليوم", "area": "train", "pri": "main"}, {"id": "s2r99", "time": "21:35", "title": "دولينجو 15 دقيقة", "area": "dev"}, {"id": "s2r106", "time": "21:45", "title": "حلقة أو حلقتين من سلسلة «نور» لمصطفى حسني", "area": "me"}, {"id": "s2r113", "time": "22:05", "title": "صفحات من «لا تحزن»", "area": "me"}, {"id": "s2r120", "time": "22:15", "title": "تدوين 3 أشياء جميلة صارت اليوم", "area": "me"}, {"id": "s2r127", "time": "22:25", "title": "أذكار النوم", "area": "me"}]}, "routineDone": {}, "goals": {"2026-10": [{"id": "s2g210", "title": "حفظ الدخان والجاثية (صفحة يومياً)", "area": "quran", "done": false}, {"id": "s2g211", "title": "حفظ فصلت (477–482)", "area": "quran", "done": false}, {"id": "s2g212", "title": "مراجعة الشورى والزخرف", "area": "quran", "done": false}, {"id": "s2g213", "title": "اختبار الجزء 25", "area": "quran", "done": false}, {"id": "s2g214", "title": "مذاكرة يومية للمساقات الثمانية", "area": "uni", "done": false}, {"id": "s2g215", "title": "C2C: المحاضرات العشر المتراكمة + ملخصاتها", "area": "train", "done": false}, {"id": "s2g216", "title": "طاقات: الكورس كامل (9 فيديوهات)", "area": "train", "done": false}, {"id": "s2g217", "title": "Forward: الوحدات 1–4", "area": "train", "done": false}, {"id": "s2g218", "title": "Nomo: خطة آخر أسبوع + فيديوهات تيك توك + تحليل وتقرير أكتوبر", "area": "work", "done": false}, {"id": "s2g219", "title": "Fixify: خطة + تصاميم + جدولة X + تقرير", "area": "work", "done": false}, {"id": "s2g220", "title": "GD: خطة + جدولة X وتيك توك وميتا + تحليل", "area": "work", "done": false}, {"id": "s2g221", "title": "العبادات اليومية: قيام، ضحى، استخارة، رقية، البقرة", "area": "me", "done": false}, {"id": "s2g222", "title": "الأذكار يومياً: الصباح والمساء والنوم", "area": "me", "done": false}, {"id": "s2g223", "title": "تدوين 3 أشياء جميلة يومياً + امتنان الأسبوع", "area": "me", "done": false}, {"id": "s2g224", "title": "تسليم قصة المنحة للمسابقة", "area": "dev", "done": false}, {"id": "s2g225", "title": "لينكدإن: خطوتين بالأسبوع", "area": "dev", "done": false}, {"id": "s2g226", "title": "دولينجو يومياً", "area": "dev", "done": false}]}};
+const SEED = {"v": 3, "seedVersion": 3, "tasks": [{"id": "s2t132", "title": "حفظ جديد: الدخان ص 496", "sec": "din", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t133", "title": "مراجعة: الشورى ص 483–484", "sec": "din", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t136", "title": "Nomo: خطة محتوى آخر أسبوع بأكتوبر", "sec": "work", "date": "2026-10-19", "done": false, "doneAt": null}, {"id": "s2t137", "title": "حفظ جديد: الدخان ص 497", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t138", "title": "مراجعة: الشورى ص 485–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t139", "title": "تسميع: الدخان ص 496–497 + الشورى 483–486", "sec": "din", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t142", "title": "Nomo: اختيار فيديوهات تيك توك حسب الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t143", "title": "Fixify: كتابة الخطة", "sec": "work", "date": "2026-10-20", "done": false, "doneAt": null}, {"id": "s2t145", "title": "حفظ جديد: الدخان ص 498", "sec": "din", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t146", "title": "مراجعة: الشورى ص 487–489", "sec": "din", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t149", "title": "GD: خطة المحتوى (مع WhatsApp Orders قبل فعالية المطاعم)", "sec": "work", "date": "2026-10-21", "done": false, "doneAt": null}, {"id": "s2t151", "title": "حفظ جديد: الجاثية ص 499", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t152", "title": "مراجعة: الزخرف ص 489–490", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t153", "title": "تسميع: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t156", "title": "Fixify: تصميم البوسترات", "sec": "work", "date": "2026-10-22", "done": false, "doneAt": null}, {"id": "s2t157", "title": "حفظ جديد: الجاثية ص 500", "sec": "din", "date": "2026-10-23", "done": false, "doneAt": null}, {"id": "s2t158", "title": "مراجعة: الزخرف ص 491–492", "sec": "din", "date": "2026-10-23", "done": false, "doneAt": null}, {"id": "s2t161", "title": "حفظ جديد: الجاثية ص 501", "sec": "din", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t162", "title": "مراجعة: الزخرف ص 493–495", "sec": "din", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t165", "title": "GD: جدولة/نشر الأسبوع على X وتيك توك وميتا بزنس", "sec": "work", "date": "2026-10-24", "done": false, "doneAt": null}, {"id": "s2t167", "title": "حفظ جديد: الجاثية ص 502", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t168", "title": "مراجعة: الدخان كاملة (496–498)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t169", "title": "تسميع: الجاثية كاملة (499–502)", "sec": "din", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t172", "title": "Fixify: تصميم الكاروسيلات", "sec": "work", "date": "2026-10-25", "done": false, "doneAt": null}, {"id": "s2t174", "title": "حفظ جديد: فصلت ص 477", "sec": "din", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t175", "title": "مراجعة: الشورى كاملة (483–489)", "sec": "din", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t178", "title": "Fixify: جدولة المحتوى على X", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t179", "title": "GD: متابعة التحليل (أداء الأسبوع)", "sec": "work", "date": "2026-10-26", "done": false, "doneAt": null}, {"id": "s2t180", "title": "حفظ جديد: فصلت ص 478", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t181", "title": "مراجعة: الزخرف كاملة (489–495)", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t182", "title": "تسميع: فصلت 477–478 + مراجعة الشورى", "sec": "din", "date": "2026-10-27", "done": false, "doneAt": null}, {"id": "s2t186", "title": "حفظ جديد: فصلت ص 479", "sec": "din", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t187", "title": "مراجعة الجزء 25 كامل (482–502) تجهيزاً للاختبار", "sec": "din", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t190", "title": "Nomo: تحليل محتوى أكتوبر (تيك توك + X)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t191", "title": "GD: جدولة الأسبوع الجاي (X + تيك توك + ميتا)", "sec": "work", "date": "2026-10-28", "done": false, "doneAt": null}, {"id": "s2t192", "title": "حفظ جديد: فصلت ص 480", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t193", "title": "مراجعة خفيفة قبل الاختبار: الدخان + الجاثية", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t194", "title": "اختبار الجزء 25 (لو موعده غير، انقليه)", "sec": "din", "date": "2026-10-29", "done": false, "doneAt": null}, {"id": "s2t198", "title": "حفظ جديد: فصلت ص 481", "sec": "din", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t199", "title": "مراجعة: فصلت 477–480", "sec": "din", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t201", "title": "Nomo: كتابة تقرير أكتوبر", "sec": "work", "date": "2026-10-30", "done": false, "doneAt": null}, {"id": "s2t202", "title": "حفظ جديد: فصلت ص 482", "sec": "din", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t203", "title": "مراجعة: فصلت 477–482", "sec": "din", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t206", "title": "Fixify: تقرير أكتوبر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t207", "title": "GD: تحليل الشهر", "sec": "work", "date": "2026-10-31", "done": false, "doneAt": null}, {"id": "s2t209", "title": "حفظ غافر (نوفمبر)", "sec": "din", "date": null, "done": false, "doneAt": null}], "checks": {}, "water": {}, "courses": [{"id": "taqat", "name": "طاقات", "short": "طاقات", "unit": "فيديو", "total": 9}, {"id": "c2c", "name": "C2C · المحاضرات المتراكمة", "short": "C2C", "unit": "محاضرة", "total": 10}, {"id": "fwd", "name": "Forward", "short": "Forward", "unit": "الوحدة", "total": 4, "release": ["2026-10-06", "2026-10-13", "2026-10-20", "2026-10-27"]}], "queue": ["c2c:1", "fwd:1", "taqat:1", "c2c:2", "c2c:3", "taqat:2", "taqat:3", "c2c:4", "c2c:5", "fwd:2", "taqat:4", "c2c:6", "taqat:5", "c2c:7", "c2c:8", "fwd:3", "taqat:6", "c2c:9", "c2c:10", "taqat:7", "taqat:8", "fwd:4", "taqat:9"], "units": {}, "story": [null, null, null, null, null, null], "goals": {"2026-10": [{"id": "s2g210", "title": "حفظ الدخان والجاثية (صفحة يومياً)", "sec": "din", "done": false}, {"id": "s2g211", "title": "حفظ فصلت (477–482)", "sec": "din", "done": false}, {"id": "s2g212", "title": "مراجعة الشورى والزخرف", "sec": "din", "done": false}, {"id": "s2g213", "title": "اختبار الجزء 25", "sec": "din", "done": false}, {"id": "s2g214", "title": "مذاكرة يومية للمساقات الثمانية", "sec": "ilm", "done": false}, {"id": "s2g215", "title": "C2C: المحاضرات العشر المتراكمة + ملخصاتها", "sec": "ilm", "done": false}, {"id": "s2g216", "title": "طاقات: الكورس كامل (9 فيديوهات)", "sec": "ilm", "done": false}, {"id": "s2g217", "title": "Forward: الوحدات 1–4", "sec": "ilm", "done": false}, {"id": "s2g218", "title": "Nomo: خطة آخر أسبوع + فيديوهات تيك توك + تحليل وتقرير أكتوبر", "sec": "work", "done": false}, {"id": "s2g219", "title": "Fixify: خطة + تصاميم + جدولة X + تقرير", "sec": "work", "done": false}, {"id": "s2g220", "title": "GD: خطة + جدولة X وتيك توك وميتا + تحليل", "sec": "work", "done": false}, {"id": "s2g221", "title": "العبادات اليومية: قيام، ضحى، استخارة، رقية، البقرة", "sec": "nafs", "done": false}, {"id": "s2g222", "title": "الأذكار يومياً: الصباح والمساء والنوم", "sec": "nafs", "done": false}, {"id": "s3g1", "title": "المطرة (680 مل) + الفيتامين + ترطيب الوجه يومياً", "sec": "nafs", "done": false}, {"id": "s2g223", "title": "تدوين 3 أشياء جميلة يومياً + امتنان الأسبوع", "sec": "nafs", "done": false}, {"id": "s2g224", "title": "تسليم قصة المنحة للمسابقة", "sec": "dev", "done": false}, {"id": "s2g225", "title": "لينكدإن: خطوتين بالأسبوع", "sec": "dev", "done": false}, {"id": "s2g226", "title": "دولينجو يومياً", "sec": "dev", "done": false}]}};
 (function(){
-const AR_DAYS=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-const START="2026-10-19";
-const AR_MONTHS=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
-const COLORS=["--a1","--a2","--a3","--a4","--a5","--a6"];
+const DAYS=["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+const MONTHS=["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const START="2026-10-19", ALL=[0,1,2,3,4,5,6], NOFRI=[0,1,2,3,4,6], ZOOM=[1,3,6], TASMEE=[0,2,4];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2,9);
 const pad=n=>String(n).padStart(2,"0");
 const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 const parse=s=>{const[a,b,c]=s.split("-").map(Number);return new Date(a,b-1,c)};
 const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
-const weekStart=d=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());return addDays(x,-((x.getDay()+1)%7))}; // Saturday
+const weekStart=d=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());return addDays(x,-((x.getDay()+1)%7))};
 const mkey=d=>d.getFullYear()+"-"+pad(d.getMonth()+1);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dow=k=>parse(k).getDay();
+const fmtDay=k=>{const d=parse(k);return DAYS[d.getDay()]+" "+d.getDate()+" "+MONTHS[d.getMonth()]};
 
-const DEFAULT={v:1,seedVersion:0,areas:[
-  {id:"work",name:"الشغل والعملاء",c:0},{id:"uni",name:"الجامعة",c:1},
-  {id:"train",name:"التدريبات",c:2},{id:"quran",name:"التحفيظ",c:3},{id:"me",name:"شخصي",c:4}],
-  tasks:[],routine:{},routineDone:{},goals:{}};
-let S=JSON.parse(JSON.stringify(DEFAULT));
-let view="today", weekOff=0, monthOff=0;
-let ref=null, saving=false, pending=false, timer=null, lastUndo=null;
+/* ---------- fixed daily lists ---------- */
+const PRAYERS=[["fajr","الفجر"],["dhuhr","الظهر"],["asr","العصر"],["maghrib","المغرب"],["isha","العشاء"],["qiyam","قيام"],["duha","ضحى"],["istikhara","استخارة"]];
+const AZKAR=[["sabah","الصباح"],["masa","المساء"],["nawm","النوم"],["ruqya","رقية"]];
+const HABITS=[["vitamin","الفيتامين"],["face","ترطيب الوجه"]];
+const HEART=[["nour","حلقة من سلسلة «نور»",ALL],["latahzan","صفحات من «لا تحزن»",ALL],["three","3 أشياء جميلة صارت اليوم",ALL],["support","جلسة الدعم النفسي مع C2C",[4]],["siraj","جلسة دعم على تطبيق سراج",[5]],["podcast","بودكاست محمد الغليظ",[5]],["gratitude","تدوين امتنان الأسبوع",[5]]];
+const ILM=[["uni","الجامعة: مذاكرة ساعة ونص","6:30 م",NOFRI],["zoom","C2C: الزوم المباشر","10:00–1:00",ZOOM],["zoomsum","C2C: ملخص زوم اليوم","8:00 م",ZOOM]];
+const DEV=[["duo","دولينجو",ALL],["linkedin","لينكدإن",[1,5]]];
+const STORY=["مخطط","الجزء 1","الجزء 2","الجزء 3","تدقيق","تسليم"], STORY_DUE="2026-11-01";
+const ROUTINE=[["04:00","قيام الليل","c:qiyam",ALL],["05:00","أذكار الصباح","c:sabah",ALL],["05:20","الحفظ والمراجعة","hifz",ALL],["06:30","تركيز ①","f1",ALL],["09:30","الضحى","c:duha",ALL],["09:45","الاستخارة","c:istikhara",ALL],["10:00","زوم C2C","c:zoom",ZOOM],["13:30","شغل العملاء","work",NOFRI],["15:45","تركيز ②","f2",NOFRI],["16:30","أذكار المساء","c:masa",ALL],["17:15","سورة البقرة","c:baqara",ALL],["18:30","الجامعة","c:uni",NOFRI],["20:00","التسميع","tasmee",TASMEE],["20:00","ملخص الزوم","c:zoomsum",ZOOM],["21:35","دولينجو","c:duo",ALL],["22:25","أذكار النوم","c:nawm",ALL]];
+const SECS=[["din","ديني"],["nafs","نفسي"],["ilm","علمي"],["dev","تطوير"],["work","الشغل"]];
+const BOTTLE_ML=680;
+
+const DEFAULT={v:3,seedVersion:0,tasks:[],checks:{},water:{},courses:[],queue:[],units:{},story:[null,null,null,null,null,null],goals:{}};
+let S=JSON.parse(JSON.stringify(DEFAULT)), view="today", weekOff=0, monthOff=0, ref=null, saving=false, pending=false, timer=null, lastUndo=null, ALLOC={};
+const TODAY=()=>ymd(new Date());
 
 /* ---------- storage ---------- */
-function local(set){try{if(set)localStorage.setItem("nour-planner",JSON.stringify(S));else{const v=localStorage.getItem("nour-planner");return v?JSON.parse(v):null}}catch(e){return null}}
-function norm(o){const d=JSON.parse(JSON.stringify(DEFAULT));if(!o||typeof o!=="object")return d;for(const k in d)if(o[k]!==undefined)d[k]=o[k];return d}
-function save(){local(true);if(!ref)return;clearTimeout(timer);timer=setTimeout(flush,700)}
+function local(set){try{if(set)localStorage.setItem("nour-planner-v3",JSON.stringify(S));else{const v=localStorage.getItem("nour-planner-v3");return v?JSON.parse(v):null}}catch(e){return null}}
+function norm(o){const d=JSON.parse(JSON.stringify(DEFAULT));if(!o||typeof o!=="object")return d;for(const k in d)if(o[k]!==undefined&&o[k]!==null)d[k]=o[k];return d}
+function save(){local(true);if(!ref)return;clearTimeout(timer);timer=setTimeout(flush,600)}
 async function flush(){if(!ref)return;if(saving){pending=true;return}saving=true;
-  try{await ref.set(JSON.parse(JSON.stringify(S)));$("sync").textContent="محفوظ ✓"}catch(e){$("sync").textContent="ما انحفظ: "+(e&&e.message||"خطأ")+" — التعديلات محفوظة على هذا الجهاز"}
+  try{await ref.set(JSON.parse(JSON.stringify(S)));$("sync").textContent="محفوظ ✓"}catch(e){$("sync").textContent="ما انحفظ: "+(e&&e.message||"خطأ")+" · التعديلات محفوظة على هذا الجهاز"}
   saving=false;if(pending){pending=false;flush()}}
-const L=local(false);if(L)S=norm(L);
+{const L=local(false);if(L&&L.v===3)S=norm(L)}
 
+/* ---------- migration from older versions ---------- */
+function migrate(old){
+  const N=JSON.parse(JSON.stringify(SEED));
+  const isSeed=id=>/^(s\d+)?[rtg]\d+$/.test(id);
+  const unitOf=t=>{let m;
+    if(m=t.match(/طاقات: فيديو (\d+)/))return "taqat:"+m[1];
+    if(m=t.match(/C2C: محاضرة متراكمة (\d+)/))return "c2c:"+m[1];
+    if(m=t.match(/Forward:.*الوحدة (\d+)/))return "fwd:"+m[1];
+    return null};
+  const stepOf=t=>{if(!/^القصة:/.test(t))return -1;
+    if(/مخطط/.test(t))return 0;if(/الجزء الأول/.test(t))return 1;if(/الجزء الثاني/.test(t))return 2;if(/الجزء الثالث/.test(t))return 3;if(/تعديل|تدقيق/.test(t))return 4;if(/تسليم/.test(t))return 5;return -1};
+  const SEC={quran:"din",me:"nafs",uni:"ilm",train:"ilm",dev:"dev",work:"work"};
+  const titles=new Map(N.tasks.map(t=>[t.title,t]));
+  (old.tasks||[]).forEach(t=>{
+    const u=unitOf(t.title),st=stepOf(t.title);
+    if(u){if(t.done&&t.doneAt&&t.doneAt>=START)N.units[u]=t.doneAt;return}
+    if(st>=0){if(t.done&&t.doneAt)N.story[st]=N.story[st]||t.doneAt;return}
+    const same=titles.get(t.title);
+    if(same){if(t.done){same.done=true;same.doneAt=t.doneAt||same.date}return}
+    if(!isSeed(t.id))N.tasks.push({id:t.id,title:t.title,sec:SEC[t.area]||"work",date:t.date||null,done:!!t.done,doneAt:t.doneAt||null});
+  });
+  const KEY=[[/قيام الليل/,["qiyam"]],[/استخارة/,["istikhara"]],[/صلاة الضحى/,["duha"]],[/أذكار الصباح/,["sabah"]],[/أذكار المساء/,["masa"]],[/أذكار النوم/,["nawm"]],[/رقية/,["ruqya"]],[/سورة البقرة/,["baqara"]],[/دولينجو/,["duo"]],[/سلسلة «نور»/,["nour"]],[/لا تحزن/,["latahzan"]],[/3 أشياء/,["three"]],[/مذاكرة الجامعة/,["uni"]],[/زوم مباشر/,["zoom"]],[/ملخص زوم/,["zoomsum"]],[/لينكدإن/,["linkedin"]],[/الدعم النفسي/,["support"]],[/سراج/,["siraj"]],[/بودكاست/,["podcast"]],[/امتنان/,["gratitude"]]];
+  const rTitle={};Object.values(old.routine||{}).forEach(a=>(a||[]).forEach(r=>rTitle[r.id]=r.title));
+  Object.entries(old.routineDone||{}).forEach(([day,ids])=>{if(day<START)return;(ids||[]).forEach(id=>{const ti=rTitle[id]||"";KEY.forEach(([re,ks])=>{if(re.test(ti))ks.forEach(k=>{(N.checks[day]=N.checks[day]||{})[k]=true})})})});
+  Object.entries(old.goals||{}).forEach(([mk,arr])=>{const dest=N.goals[mk]=N.goals[mk]||[];(arr||[]).forEach(g=>{const same=dest.find(x=>x.title===g.title);if(same){if(g.done)same.done=true}else if(!isSeed(g.id))dest.push({id:g.id,title:g.title,sec:SEC[g.area]||"dev",done:!!g.done})})});
+  return norm(N);
+}
+
+/* ---------- courses & auto plan ---------- */
+const course=id=>S.courses.find(c=>c.id===id);
+const unitLabel=u=>{const[c,n]=u.split(":");const co=course(c);return co?`${co.short||co.name} · ${co.unit} ${n}`:u};
+const doneAt=u=>S.units[u]||null;
+const slotsFor=k=>dow(k)===5?1:2;
+function fullQueue(){const q=S.queue.filter(u=>course(u.split(":")[0]));
+  S.courses.forEach(c=>{for(let n=1;n<=c.total;n++){const u=c.id+":"+n;if(!q.includes(u))q.push(u)}});
+  return q.filter(u=>+u.split(":")[1]<=course(u.split(":")[0]).total)}
+function eligible(u,k){const[c,n]=u.split(":");const r=(course(c).release||[])[n-1];return !r||r<=k}
+function allocate(){
+  const T=TODAY(),Q=fullQueue(),res={};
+  Q.forEach(u=>{const d=doneAt(u);if(d&&d<T)(res[d]=res[d]||[]).push({u,done:true})});
+  let rem=Q.filter(u=>!doneAt(u));
+  const take=(k,n)=>{const out=[];for(let i=0;i<rem.length&&out.length<n;){if(eligible(rem[i],k))out.push(rem.splice(i,1)[0]);else i++}return out};
+  const dT=Q.filter(u=>doneAt(u)===T);
+  res[T]=dT.map(u=>({u,done:true})).concat(take(T,Math.max(0,slotsFor(T)-dT.length)).map(u=>({u,done:false})));
+  let k=T,g=0;while(rem.length&&g<200){k=ymd(addDays(parse(k),1));g++;res[k]=take(k,slotsFor(k)).map(u=>({u,done:false}))}
+  return res;
+}
+
+/* ---------- day model ---------- */
+const onDay=(days,k)=>days.includes(dow(k));
+function model(k){
+  const T=TODAY(),C=S.checks[k]||{},isT=k===T;
+  const ck=(key,label,extra)=>Object.assign({key,label,done:!!C[key],act:`data-act="c" data-k="${key}" data-d="${k}"`},extra||{});
+  const tasksOf=sec=>S.tasks.filter(t=>t.sec===sec&&(t.date===k||(isT&&t.date&&t.date>=START&&t.date<k&&!t.done)));
+  const trow=t=>({label:t.title,done:t.done,act:`data-act="t" data-id="${t.id}"`,meta:t.date<k?"متأخر":"",late:t.date<k,del:t.id});
+  const quran=tasksOf("din").map(trow);quran.push(ck("baqara","سورة البقرة"));
+  const focus=(ALLOC[k]||[]).map((x,i)=>({u:x.u,label:unitLabel(x.u),done:doneAt(x.u)===k||(k<T&&x.done),slot:i}));
+  const m={
+    din:{prayers:PRAYERS.map(([a,b])=>ck(a,b)),azkar:AZKAR.map(([a,b])=>ck(a,b)),quran},
+    nafs:{water:S.water[k]||0,habits:HABITS.map(([a,b])=>ck(a,b)),heart:HEART.filter(h=>onDay(h[2],k)).map(([a,b])=>ck(a,b)).concat(tasksOf("nafs").map(trow))},
+    ilm:{focus,rows:ILM.filter(r=>onDay(r[3],k)).map(([a,b,c])=>ck(a,b,{meta:c})).concat(tasksOf("ilm").map(trow))},
+    dev:{chips:DEV.filter(r=>onDay(r[2],k)).map(([a,b])=>ck(a,b)),rows:tasksOf("dev").map(trow)},
+    work:{rows:tasksOf("work").map(trow)}
+  };
+  const cnt={din:[...m.din.prayers,...m.din.azkar,...m.din.quran],nafs:[{done:m.nafs.water>=1},...m.nafs.habits,...m.nafs.heart],ilm:[...focus,...m.ilm.rows],dev:[...m.dev.chips,...m.dev.rows],work:m.work.rows};
+  m.count={};let d=0,t=0;for(const s in cnt){const a=cnt[s].filter(x=>x.done).length;m.count[s]=[a,cnt[s].length];d+=a;t+=cnt[s].length}
+  m.total=[d,t];m.C=C;return m;
+}
+function routineDone(item,k,m){const key=item[2];
+  if(key.startsWith("c:"))return !!m.C[key.slice(2)];
+  if(key==="hifz"){const h=S.tasks.filter(t=>t.date===k&&t.sec==="din"&&/^حفظ جديد/.test(t.title));return h.length>0&&h.every(t=>t.done)}
+  if(key==="tasmee"){const h=S.tasks.filter(t=>t.date===k&&/^تسميع/.test(t.title));return h.length?h.every(t=>t.done):!!m.C.tasmee}
+  if(key==="work"){const w=m.work.rows;return w.length>0&&w.every(t=>t.done)}
+  if(key==="f1")return !!(m.ilm.focus[0]&&m.ilm.focus[0].done);
+  if(key==="f2")return !!(m.ilm.focus[1]&&m.ilm.focus[1].done);
+  return false}
+
+/* ---------- render helpers ---------- */
+const chip=x=>`<button class="chip ${x.done?"on":""}" ${x.act} aria-pressed="${x.done}">${esc(x.label)}</button>`;
+const row=x=>`<div class="row ${x.done?"done":""}"><button class="ck ${x.done?"on":""}" ${x.act} aria-label="تم: ${esc(x.label)}"></button><span class="txt">${esc(x.label)}</span>${x.meta?`<span class="meta ${x.late?"late":""}">${esc(x.meta)}</span>`:""}${x.del?`<button class="x" data-act="td" data-id="${x.del}" aria-label="حذف">×</button>`:""}</div>`;
+const sec=(cls,title,c,body)=>`<section class="sec ${cls}"><header>${title}<em>${c[0]} / ${c[1]}</em></header><div class="body">${body}</div></section>`;
+function bottle(n){const f=Math.min(n,1);const h=40*f;return `<svg viewBox="0 0 34 56" aria-hidden="true"><rect x="12" y="1" width="10" height="6" rx="2" fill="var(--c)"/><path d="M11 7h12v4c4 2 7 5 7 10v29a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V21c0-5 3-8 7-10z" fill="var(--paper)" stroke="var(--c)" stroke-width="2"/><clipPath id="bc"><path d="M11 7h12v4c4 2 7 5 7 10v29a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V21c0-5 3-8 7-10z"/></clipPath><rect clip-path="url(#bc)" x="0" y="${55-h}" width="34" height="${h}" fill="var(--c)" opacity=".85"/></svg>`}
+function courseCard(c,interactive){const T=TODAY();const Q=fullQueue();const next=Q.find(u=>u.startsWith(c.id+":")&&!doneAt(u));
+  const d=Object.keys(S.units).filter(u=>u.startsWith(c.id+":")&&+u.split(":")[1]<=c.total).length;
+  let boxes="";for(let n=1;n<=c.total;n++){const u=c.id+":"+n,on=!!doneAt(u),lock=!on&&!eligible(u,T);
+    boxes+=`<button class="box ${on?"on":""} ${u===next?"next":""} ${lock?"locked":""}" data-act="u" data-u="${u}" aria-pressed="${on}" aria-label="${esc(c.unit)} ${n}">${n}</button>`}
+  const info=d>=c.total?"خلص الكورس ✓":`${d} من ${c.total}${next?` · الجاي: ${esc(c.unit)} ${next.split(":")[1]}`:""}`;
+  return `<div class="course"><div class="t">${esc(c.name)}<small>${info}</small></div><div class="boxes">${boxes}</div></div>`}
+function storyBlock(){const T=TODAY();const left=Math.round((parse(STORY_DUE)-parse(T))/864e5);const done=S.story.filter(Boolean).length;
+  return `<div><div class="lbl"><span>قصة المنحة · التسليم 1 نوفمبر</span><span>${done===6?"تسلّمت ✓":left>=0?"باقي "+left+" يوم":"خلص الموعد"}</span></div><div class="steps">${STORY.map((s,i)=>`<button class="step ${S.story[i]?"on":""}" data-act="st" data-i="${i}" aria-pressed="${!!S.story[i]}">${s}</button>`).join("")}</div></div>`}
+
+/* ---------- render ---------- */
+function render(){
+  const now=new Date(),T=ymd(now);ALLOC=allocate();
+  $("date").innerHTML=esc(DAYS[now.getDay()]+" "+now.getDate()+" "+MONTHS[now.getMonth()])+"<br>"+(()=>{try{return esc(new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long"}).format(now))}catch(e){return ""}})();
+  for(const b of document.querySelectorAll(".tabs button"))b.setAttribute("aria-selected",b.dataset.v===view);
+  ["today","week","month"].forEach(v=>$("v-"+v).hidden=view!==v);
+  const m=model(T);const[d,t]=m.total;const pct=t?Math.round(d/t*100):0;
+  const h=now.getHours();const greet=h<12?"صباح الورد يا نور":h<18?"مساء الياسمين يا نور":"مساء النور يا نور";
+  $("hello").innerHTML=esc(greet)+` <span>· ${d===t&&t?"خلّصتِ كل شي اليوم، الله يسعدك":d?`خلّصتِ ${d} من ${t}، كمّلي`:"يلا أول خطوة"}</span>`;
+  if(view==="today")renderToday(m,pct,T,now);
+  if(view==="week")renderWeek(T);
+  if(view==="month")renderMonth(T);
+}
+function renderToday(m,pct,T,now){
+  const dash=(pct/100)*251.3;
+  const rts=ROUTINE.filter(r=>onDay(r[3],T)).concat((S.customRoutine||[]).filter(r=>onDay(r.days||ALL,T)).map(r=>[r.time,r.title,"c:x"+r.id,ALL]))
+    .sort((a,b)=>a[0].localeCompare(b[0]));
+  const hm=pad(now.getHours())+":"+pad(now.getMinutes());let nowIdx=-1;rts.forEach((r,i)=>{if(r[0]<=hm)nowIdx=i});
+  $("top").innerHTML=`<div class="card ring"><svg viewBox="0 0 100 100" role="img" aria-label="إنجاز اليوم ${pct}%"><circle cx="50" cy="50" r="40" fill="none" stroke="var(--tint)" stroke-width="11"/><circle cx="50" cy="50" r="40" fill="none" stroke="var(--accent)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${dash} 251.3" transform="rotate(-90 50 50)"/><text x="50" y="58" text-anchor="middle" font-size="22" font-weight="800" fill="var(--ink)" font-family="inherit">${pct}%</text></svg><small>إنجاز اليوم</small></div>
+  <div class="card rt"><h3>روتين اليوم</h3><ul>${rts.map((r,i)=>{const dn=routineDone(r,T,m);return `<li class="${dn?"d":""} ${i===nowIdx&&!dn?"now":""}"><b>${r[0]}</b><i></i><span>${esc(r[1])}</span></li>`}).join("")}</ul></div>`;
+  const D=m.din,N=m.nafs,I=m.ilm,V=m.dev,W=m.work;
+  const din=`<div><div class="lbl">الصلوات</div><div class="chips">${D.prayers.map(chip).join("")}</div></div>
+    <div><div class="lbl">الأذكار</div><div class="chips">${D.azkar.map(chip).join("")}</div></div>
+    <div><div class="lbl">القرآن</div><div class="rows">${D.quran.map(row).join("")}</div></div>`;
+  const w=N.water;
+  const nafs=`<div class="water">${bottle(w)}<div class="wt"><b>${w>=1?(w>1?`خلّصتِ ${w} مطرات ✓`:"خلّصتِ المطرة ✓"):"اشربي مطرتك"}</b><span>المطرة ${BOTTLE_ML} مل · الهدف مرة باليوم على الأقل</span></div><div class="wbtns">${w?`<button class="wbtn minus" data-act="w" data-n="-1" aria-label="ناقص مطرة">−</button>`:""}<button class="wbtn" data-act="w" data-n="1" aria-label="خلّصت مطرة">+</button></div></div>
+    <div><div class="lbl">العادات</div><div class="chips">${N.habits.map(chip).join("")}</div></div>
+    <div><div class="lbl">راحة القلب</div><div class="rows">${N.heart.map(row).join("")}</div></div>`;
+  const fsl=I.focus.map((f,i)=>`<button class="fc ${f.done?"done":""}" data-act="f" data-u="${f.u}" aria-pressed="${f.done}"><span class="ck ${f.done?"on":""}" aria-hidden="true"></span><span class="t"><small>تركيز ${i===0?"① · 6:30 ص":i===1?"② · 3:45 م":"إضافي"}</small><span>${esc(f.label)}</span></span></button>`).join("")||`<p class="empty">خلّصتِ كل الكورسات، ما ضايل إشي 🌸</p>`;
+  const ilm=`<div><div class="lbl">تركيز اليوم</div><div class="focus">${fsl}</div></div>
+    ${I.rows.length?`<div class="rows">${I.rows.map(row).join("")}</div>`:""}
+    <div class="lbl" style="margin:0">الكورسات</div>${S.courses.map(c=>courseCard(c)).join("")}
+    <div class="note">علّمي على أي رقم بتخلصيه، والخطة بتوزع الباقي على الأيام الجاية لحالها.</div>`;
+  const dev=`${V.chips.length?`<div class="chips">${V.chips.map(chip).join("")}</div>`:""}${storyBlock()}${V.rows.length?`<div class="rows">${V.rows.map(row).join("")}</div>`:""}`;
+  const inbox=S.tasks.filter(t=>!t.date&&!t.done);
+  const work=`<div class="rows">${W.rows.length?W.rows.map(row).join(""):`<p class="empty">ما في مهام شغل اليوم.</p>`}</div>
+    <details><summary>+ إضافة مهمة</summary><form class="add" id="f-task" style="margin-top:8px"><input type="text" id="t-title" placeholder="اكتبي المهمة…" autocomplete="off" required><select id="t-sec" aria-label="القسم">${SECS.map(([a,b])=>`<option value="${a}" ${a==="work"?"selected":""}>${b}</option>`).join("")}</select><select id="t-when" aria-label="الموعد"><option value="today">اليوم</option><option value="tomorrow">بكرا</option><option value="date">تاريخ…</option><option value="none">بدون موعد</option></select><input type="date" id="t-date" hidden aria-label="التاريخ"><button class="btn" type="submit">إضافة</button></form></details>
+    ${inbox.length?`<details><summary>صندوق الأفكار (${inbox.length})</summary><div class="rows" style="margin-top:4px">${inbox.map(t=>row({label:t.title,done:false,act:`data-act="t" data-id="${t.id}"`,del:t.id,meta:SECS.find(s=>s[0]===t.sec)?.[1]||""})).join("")}</div></details>`:""}`;
+  $("secs").innerHTML=sec("din","ديني",m.count.din,din)+sec("nafs","نفسي",m.count.nafs,nafs)+sec("ilm","علمي",m.count.ilm,ilm)+sec("dev","تطوير",m.count.dev,dev)+sec("work","الشغل · مهام سريعة",m.count.work,work);
+}
+function renderWeek(T){
+  const ws=addDays(weekStart(new Date()),weekOff*7),we=addDays(ws,6);
+  $("w-title").textContent=(weekOff===0?"هذا الأسبوع · ":"")+ws.getDate()+" "+MONTHS[ws.getMonth()]+" – "+we.getDate()+" "+MONTHS[we.getMonth()];
+  let D=0,Tt=0,html="";
+  for(let i=0;i<7;i++){const k=ymd(addDays(ws,i));if(k<START)continue;const m=model(k);const fut=k>T;
+    if(!fut){D+=m.total[0];Tt+=m.total[1]}
+    const q=S.tasks.filter(t=>t.date===k&&t.sec==="din");const wk=S.tasks.filter(t=>t.date===k&&t.sec!=="din");
+    const pr=m.din.prayers.filter(x=>x.done).length;
+    html+=`<div class="card day ${k===T?"today":""}"><h3>${fmtDay(k)}<span>${fut?"جاي":Math.round(m.total[0]/(m.total[1]||1)*100)+"%"}</span></h3>
+      ${m.ilm.focus.length?`<div class="mini ilm">${m.ilm.focus.map(f=>`<span class="pill ${f.done?"on":""}">${esc(f.label)}</span>`).join("")}</div>`:""}
+      ${q.length?`<div class="mini din">${q.map(t=>`<span class="pill ${t.done?"on":""}">${esc(t.title)}</span>`).join("")}</div>`:""}
+      ${wk.length?`<div class="mini work">${wk.map(t=>`<span class="pill ${t.done?"on":""}">${esc(t.title)}</span>`).join("")}</div>`:""}
+      ${fut?"":`<div class="note">الصلوات ${pr}/8 · المطرة ${m.nafs.water>=1?"✓":"✗"} · الأذكار ${m.din.azkar.filter(x=>x.done).length}/4</div>`}</div>`}
+  $("w-days").innerHTML=html||`<div class="card empty">الخطة بتبلش من الإثنين 19 أكتوبر.</div>`;
+  $("w-bar").style.width=(Tt?D/Tt*100:0)+"%";$("w-sum").textContent=Tt?`أنجزتِ ${D} من ${Tt} لحد اليوم`:"";
+}
+function renderMonth(T){
+  const md=new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1),mk=mkey(md);
+  $("m-title").textContent=MONTHS[md.getMonth()]+" "+md.getFullYear();
+  const days=[];for(let d=new Date(md);d.getMonth()===md.getMonth();d=addDays(d,1)){const k=ymd(d);if(k>=START&&k<=T)days.push(k)}
+  let pr=0,az=0,wt=0,all=[0,0];days.forEach(k=>{const m=model(k);pr+=m.din.prayers.filter(x=>x.done).length;az+=m.din.azkar.filter(x=>x.done).length;wt+=m.nafs.water>=1?1:0;all[0]+=m.total[0];all[1]+=m.total[1]});
+  const n=days.length||1;
+  $("m-stats").innerHTML=[[Math.round(all[0]/(all[1]||1)*100)+"%","إنجاز الشهر"],[Math.round(pr/(n*8)*100)+"%","الصلوات"],[Math.round(az/(n*4)*100)+"%","الأذكار"],[wt+"/"+days.length,"أيام المطرة"]].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+  $("m-courses").innerHTML=S.courses.map(c=>courseCard(c)).join("")+storyBlock().replace('<div>','<div class="dev" style="--c:var(--dev);--s:var(--dev-s)">');
+  const gs=S.goals[mk]||[],gd=gs.filter(g=>g.done).length;
+  $("m-bar").style.width=(gs.length?gd/gs.length*100:0)+"%";$("m-gsum").textContent=gs.length?`${gd} من ${gs.length}`:"";
+  $("g-sec").innerHTML=SECS.map(([a,b])=>`<option value="${a}">${b}</option>`).join("");
+  $("g-list").innerHTML=gs.length?SECS.map(([a,b])=>{const g=gs.filter(x=>(x.sec||"dev")===a);if(!g.length)return"";return `<div class="${a}"><div class="lbl" style="color:var(--c)">${b}</div><div class="rows">${g.map(x=>row({label:x.title,done:x.done,act:`data-act="g" data-id="${x.id}"`,del:null})).join("")}</div></div>`}).join(""):`<p class="empty">اكتبي أهداف الشهر هون.</p>`;
+  $("carry-wrap").hidden=!(gs.length&&gs.some(g=>!g.done));
+}
+
+/* ---------- actions ---------- */
+function toast(msg,undo){$("toast-msg").textContent=msg;$("toast-undo").hidden=!undo;lastUndo=undo||null;$("toast").hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").hidden=true,4000)}
+$("toast-undo").onclick=()=>{if(lastUndo){lastUndo();lastUndo=null;save();render()}$("toast").hidden=true};
+document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const T=TODAY(),a=b.dataset.act;
+  if(a==="c"){const k=b.dataset.d||T;const C=S.checks[k]=S.checks[k]||{};C[b.dataset.k]=!C[b.dataset.k];if(!C[b.dataset.k])delete C[b.dataset.k]}
+  else if(a==="w"){S.water[T]=Math.max(0,(S.water[T]||0)+(+b.dataset.n))}
+  else if(a==="t"){const t=S.tasks.find(x=>x.id===b.dataset.id);if(!t)return;t.done=!t.done;t.doneAt=t.done?T:null}
+  else if(a==="td"){const i=S.tasks.findIndex(x=>x.id===b.dataset.id);if(i<0)return;const t=S.tasks.splice(i,1)[0];toast("انحذفت المهمة",()=>S.tasks.splice(i,0,t))}
+  else if(a==="f"||a==="u"){const u=b.dataset.u;if(S.units[u])delete S.units[u];else S.units[u]=T}
+  else if(a==="st"){const i=+b.dataset.i;S.story[i]=S.story[i]?null:T}
+  else if(a==="g"){const mk=mkey(new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1));const g=(S.goals[mk]||[]).find(x=>x.id===b.dataset.id);if(g)g.done=!g.done}
+  else return;
+  save();render()});
+document.addEventListener("submit",e=>{e.preventDefault();const f=e.target,T=TODAY();
+  if(f.id==="f-task"){const title=$("t-title").value.trim();if(!title)return;const w=$("t-when").value;
+    const date=w==="today"?T:w==="tomorrow"?ymd(addDays(new Date(),1)):w==="date"?($("t-date").value||T):null;
+    S.tasks.push({id:uid(),title,sec:$("t-sec").value,date,done:false,doneAt:null});toast("انضافت ✓")}
+  else if(f.id==="f-goal"){const title=$("g-title").value.trim();if(!title)return;const mk=mkey(new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1));
+    (S.goals[mk]=S.goals[mk]||[]).push({id:uid(),title,sec:$("g-sec").value,done:false});$("g-title").value=""}
+  else if(f.id==="f-course"){const name=$("c-name").value.trim();if(!name)return;const total=Math.max(1,Math.min(60,+$("c-total").value||1));
+    S.courses.push({id:"c"+uid(),name,short:name,unit:$("c-unit").value.trim()||"محاضرة",total});$("c-name").value="";toast("انضاف الكورس ✓")}
+  else return;save();render()});
+document.addEventListener("change",e=>{if(e.target.id==="t-when")$("t-date").hidden=e.target.value!=="date"});
+for(const b of document.querySelectorAll(".tabs button"))b.onclick=()=>{view=b.dataset.v;render();window.scrollTo(0,0);try{localStorage.setItem("np-view",view)}catch(e){}};
+try{const v=localStorage.getItem("np-view");if(["today","week","month"].includes(v))view=v}catch(e){}
+$("w-prev").onclick=()=>{weekOff--;render()};$("w-next").onclick=()=>{weekOff++;render()};
+$("m-prev").onclick=()=>{monthOff--;render()};$("m-next").onclick=()=>{monthOff++;render()};
+$("carry").onclick=()=>{const n=new Date(),cur=new Date(n.getFullYear(),n.getMonth()+monthOff,1),ck=mkey(cur),nk=mkey(new Date(cur.getFullYear(),cur.getMonth()+1,1));
+  const dest=S.goals[nk]=S.goals[nk]||[];let c=0;(S.goals[ck]||[]).filter(g=>!g.done).forEach(g=>{if(!dest.some(x=>x.title===g.title)){dest.push({id:uid(),title:g.title,sec:g.sec,done:false});c++}});
+  toast(c?`انتقل ${c} هدف للشهر الجاي`:"كلهم منقولين من قبل");save();render()};
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)render()});
+setInterval(()=>{if(!document.hidden)render()},60000);
+
+/* ---------- firebase ---------- */
+if(typeof firebase==="undefined"){$("login").hidden=true;if(!S.courses.length&&SEED)S=norm(SEED);render();$("sync").textContent="ما في اتصال، الحفظ على هذا الجهاز";return}
 firebase.initializeApp(FIREBASE_CONFIG);
-const auth=firebase.auth(), fdb=firebase.firestore();
+const auth=firebase.auth(),fdb=firebase.firestore();
 auth.onAuthStateChanged(u=>{
-  $("login").hidden=!!u; $("logout").hidden=!u;
+  $("login").hidden=!!u;$("logout").hidden=!u;
   if(!u){ref=null;return}
   ref={_d:fdb.collection("planners").doc(u.uid),set(o){return this._d.set(o)}};
   ref._d.onSnapshot(snap=>{if(snap.metadata.hasPendingWrites)return;
@@ -279,141 +472,8 @@ auth.onAuthStateChanged(u=>{
 $("login-btn").onclick=async()=>{const p=new firebase.auth.GoogleAuthProvider();
   try{await auth.signInWithPopup(p)}catch(e){if(e.code==="auth/popup-blocked"||e.code==="auth/operation-not-supported-in-this-environment")auth.signInWithRedirect(p);else $("login-err").textContent="ما زبط الدخول: "+e.message}};
 $("logout").onclick=()=>auth.signOut();
-
-
-function migrate(old){
-  const N=JSON.parse(JSON.stringify(SEED));
-  const isSeed=id=>/^(s\d+)?[rtg]\d+$/.test(id);
-  const TA={"حفظ جديد: الدخان 1–16":"حفظ جديد: الدخان ص 496","Forward: افهمي النظام + الوحدة 1":"② Forward: افهمي النظام + الوحدة 1"};
-  const doneT=new Map();(old.tasks||[]).filter(t=>t.done&&t.doneAt>=START).forEach(t=>doneT.set(TA[t.title]||t.title,t.doneAt));
-  N.tasks.forEach(t=>{if(doneT.has(t.title)){t.done=true;t.doneAt=doneT.get(t.title)}});
-  (old.tasks||[]).filter(t=>!isSeed(t.id)).forEach(t=>N.tasks.push(t));
-  (old.areas||[]).forEach(a=>{if(!N.areas.some(b=>b.id===a.id))N.areas.push(a)});
-  const oldR={};Object.values(old.routine||{}).forEach(arr=>arr.forEach(r=>oldR[r.id]=r.title));
-  const RA={"قيام الليل + استخارة":["قيام الليل","صلاة الاستخارة"],"رقية شرعية بعد الفجر":["رقية شرعية"],"وقت الحفظ والمراجعة (المقطع بمهام اليوم)":["الحفظ: صفحة جديدة + المراجعة (التفاصيل بالمهام)"],"مذاكرة الجامعة (ساعة ونص)":["مذاكرة الجامعة (ساعة ونص)"]};
-  N.routineDone={};
-  Object.entries(old.routineDone||{}).forEach(([day,ids])=>{if(day<START)return;const arr=N.routine[String(parse(day).getDay())]||[];
-    ids.forEach(id=>{const ti=oldR[id];if(!ti)return;(RA[ti]||[ti]).forEach(nm=>{const m=arr.find(r=>r.title===nm);if(!m)return;const L=N.routineDone[day]=N.routineDone[day]||[];if(!L.includes(m.id))L.push(m.id)})})});
-  Object.entries(old.routine||{}).forEach(([wd,arr])=>arr.forEach(r=>{if(!isSeed(r.id))(N.routine[wd]=N.routine[wd]||[]).push(r)}));
-  Object.entries(old.goals||{}).forEach(([mk,arr])=>{const dest=N.goals[mk]=N.goals[mk]||[];arr.forEach(g=>{const same=dest.find(x=>x.title===g.title);if(same){if(g.done)same.done=true}else if(!isSeed(g.id))dest.push(g)})});
-  return norm(N);
-}
-/* ---------- helpers ---------- */
-const area=id=>S.areas.find(a=>a.id===id)||{name:"—",c:5};
-const tag=id=>{const a=area(id);return `<span class="tag" style="color:var(${COLORS[a.c%6]})">${esc(a.name)}</span>`};
-function areaOpts(){return S.areas.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join("")}
-function toast(msg,undo){$("toast-msg").textContent=msg;$("toast-undo").hidden=!undo;lastUndo=undo||null;$("toast").hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").hidden=true,4000)}
-$("toast-undo").onclick=()=>{if(lastUndo){lastUndo();lastUndo=null;save();render()}$("toast").hidden=true};
-const star=o=>o&&o.pri==="main"?'<b class="star" title="أساسي">★</b> ':"";
-function fmtDay(s){const d=parse(s);return AR_DAYS[d.getDay()]+" "+d.getDate()+" "+AR_MONTHS[d.getMonth()]}
-
-function taskLi(t,showDue){const today=ymd(new Date());const late=t.date&&t.date<today&&!t.done;
-  return `<li class="${t.done?"done":""}"><button class="chk ${t.done?"on":""}" data-act="tt" data-id="${t.id}" aria-label="تم"></button>
-  <span class="txt">${star(t)}${esc(t.title)}${showDue&&t.date?`<span class="due ${late?"late":""}">${fmtDay(t.date)}</span>`:""}</span>${tag(t.area)}
-  <button class="x" data-act="td" data-id="${t.id}" aria-label="حذف">×</button></li>`}
-function list(el,items,fn,emptyMsg){$(el).innerHTML=items.length?items.map(fn).join(""):`<li class="empty">${emptyMsg}</li>`}
-
-/* ---------- render ---------- */
-function render(){
-  const now=new Date(),today=ymd(now);
-  $("gdate").textContent=AR_DAYS[now.getDay()]+" "+now.getDate()+" "+AR_MONTHS[now.getMonth()]+" "+now.getFullYear();
-  try{$("hdate").textContent=new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long"}).format(now)}catch(e){$("hdate").textContent=""}
-  ["t-area","r-area","g-area"].forEach(id=>{const v=$(id).value;$(id).innerHTML=areaOpts();if(v&&S.areas.some(a=>a.id===v))$(id).value=v});
-  for(const b of document.querySelectorAll(".tabs button"))b.setAttribute("aria-selected",b.dataset.v===view);
-  $("v-today").hidden=view!=="today";$("v-week").hidden=view!=="week";$("v-month").hidden=view!=="month";
-
-  // today
-  const late=S.tasks.filter(t=>t.date&&t.date>=START&&t.date<today&&!t.done);
-  const tod=S.tasks.filter(t=>t.date===today);
-  const inbox=S.tasks.filter(t=>!t.date&&!t.done);
-  $("late-wrap").hidden=!late.length;list("l-late",late,t=>taskLi(t,true),"");
-  list("l-today",tod.filter(t=>t.pri==="main").sort((a,b)=>a.done-b.done),t=>taskLi(t,false),"ما في مهام أساسية اليوم.");
-  list("l-quick",tod.filter(t=>t.pri!=="main").sort((a,b)=>a.done-b.done),t=>taskLi(t,false),"ما في مهام سريعة اليوم.");
-  list("l-inbox",inbox,t=>taskLi(t,false),"فاضي.");
-  const rt=(S.routine[now.getDay()]||[]).slice().sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));
-  const rd=S.routineDone[today]||[];
-  $("routine-day").textContent=AR_DAYS[now.getDay()];
-  list("l-routine",rt,r=>{const on=rd.includes(r.id);return `<li class="${on?"done":""}"><button class="chk ${on?"on":""}" data-act="rt" data-id="${r.id}" aria-label="تم"></button><span class="time">${r.time||"—"}</span><span class="txt">${star(r)}${esc(r.title)}</span>${tag(r.area)}</li>`},"ما في روتين ثابت لهذا اليوم. ضيفيه من تبويب «الأسبوع».");
-  const doneToday=S.tasks.filter(t=>t.done&&t.doneAt===today);
-  $("done-count").textContent=doneToday.length+" مهمة";
-  list("l-donetoday",doneToday,t=>taskLi(t,false),"لسا ولا شي — أول صح بتفرق.");
-  {const tm=tod.filter(t=>t.pri==="main");$("s-tasks").textContent=tm.filter(t=>t.done).length+"/"+tm.length}
-  $("s-routine").textContent=rt.filter(r=>rd.includes(r.id)).length+"/"+rt.length;
-  const mg=S.goals[mkey(now)]||[];$("s-goals").textContent=(mg.length?Math.round(mg.filter(g=>g.done).length/mg.length*100):0)+"%";
-  $("today-sub").textContent=late.length?late.length+" متأخرة":"";
-  {const h=now.getHours(),greet=h<12?"صباح الورد يا نور":h<18?"مساء الياسمين يا نور":"مساء النور يا نور";
-   const all=tod.length+rt.length,dd=tod.filter(t=>t.done).length+rt.filter(r=>rd.includes(r.id)).length;
-   const msg=!all?"يومك فاضي، رتبيه على مهلك":dd===all?"خلّصتِ كل شي اليوم، الله يسعدك":dd?`خلّصتِ ${dd} من ${all}، كمّلي`:`عندك ${all} شغلة اليوم، أول وحدة بتفتح الباقي`;
-   $("hello").innerHTML=esc(greet)+` <span>· ${esc(msg)}</span>`}
-
-  // week
-  const ws=addDays(weekStart(now),weekOff*7),we=addDays(ws,6);
-  $("w-title").textContent=(weekOff===0?"هذا الأسبوع · ":"")+ws.getDate()+" "+AR_MONTHS[ws.getMonth()]+" – "+we.getDate()+" "+AR_MONTHS[we.getMonth()];
-  let tot=0,dn=0,html="";
-  for(let i=0;i<7;i++){const d=addDays(ws,i),k=ymd(d);if(k<START)continue;
-    const ts=S.tasks.filter(t=>t.date===k),r=(S.routine[d.getDay()]||[]).slice().sort((a,b)=>(a.time||"99").localeCompare(b.time||"99")),rdd=S.routineDone[k]||[];
-    tot+=ts.length+r.length;dn+=ts.filter(t=>t.done).length+r.filter(x=>rdd.includes(x.id)).length;
-    html+=`<div class="day ${k===today?"today":""}"><h3>${AR_DAYS[d.getDay()]} ${d.getDate()}<span>${ts.filter(t=>t.done).length+r.filter(x=>rdd.includes(x.id)).length}/${ts.length+r.length}</span></h3><ul class="list">`+
-      r.map(x=>{const on=rdd.includes(x.id);return `<li class="${on?"done":""}"><button class="chk ${on?"on":""}" data-act="rt" data-id="${x.id}" data-day="${k}" aria-label="تم"></button><span class="time">${x.time||"—"}</span><span class="txt">${star(x)}${esc(x.title)}</span>${tag(x.area)}</li>`}).join("")+
-      ts.slice().sort((a,b)=>(b.pri==="main")-(a.pri==="main")).map(t=>taskLi(t,false)).join("")+(ts.length+r.length?"":`<li class="empty">فاضي</li>`)+`</ul></div>`}
-  $("w-days").innerHTML=html;$("w-bar").style.width=(tot?dn/tot*100:0)+"%";
-  $("w-sum").textContent=`أنجزتِ ${dn} من ${tot} (مهام + روتين)`;
-  $("r-day").innerHTML=[6,0,1,2,3,4,5].map(i=>`<option value="${i}">${AR_DAYS[i]}</option>`).join("");
-  if($("r-day").dataset.v)$("r-day").value=$("r-day").dataset.v;
-  $("r-list").innerHTML=[6,0,1,2,3,4,5].map(i=>{const r=(S.routine[i]||[]).slice().sort((a,b)=>(a.time||"99").localeCompare(b.time||"99"));if(!r.length)return"";
-    return `<div class="day"><h3>${AR_DAYS[i]}</h3><ul class="list">${r.map(x=>`<li><span class="time">${x.time||"—"}</span><span class="txt">${star(x)}${esc(x.title)}</span>${tag(x.area)}<button class="x" data-act="rd" data-day="${i}" data-id="${x.id}" aria-label="حذف">×</button></li>`).join("")}</ul></div>`}).join("")||`<p class="empty">ضيفي الأشياء الثابتة: المحاضرات، حلقات التحفيظ، مواعيد التدريبات، ساعات الشغل.</p>`;
-
-  // month
-  const md=new Date(now.getFullYear(),now.getMonth()+monthOff,1),mk=mkey(md);
-  $("m-title").textContent=AR_MONTHS[md.getMonth()]+" "+md.getFullYear();
-  const gs=S.goals[mk]||[],gd=gs.filter(g=>g.done).length;
-  $("m-bar").style.width=(gs.length?gd/gs.length*100:0)+"%";
-  $("m-sum").textContent=gs.length?`حققتِ ${gd} من ${gs.length} أهداف · ضايل ${gs.length-gd}`:"ما في أهداف لهذا الشهر بعد";
-  const groups=S.areas.map(a=>({a,g:gs.filter(x=>x.area===a.id)})).filter(x=>x.g.length);
-  const orphan=gs.filter(x=>!S.areas.some(a=>a.id===x.area));if(orphan.length)groups.push({a:{name:"أخرى"},g:orphan});
-  $("g-list").innerHTML=groups.length?groups.map(({a,g})=>`<div class="lbl">${esc(a.name)} · ${g.filter(x=>x.done).length}/${g.length}</div><ul class="list">${g.map(x=>`<li class="${x.done?"done":""}"><button class="chk ${x.done?"on":""}" data-act="gt" data-id="${x.id}" aria-label="تم"></button><span class="txt">${star(x)}${esc(x.title)}</span><button class="x" data-act="gd" data-id="${x.id}" aria-label="حذف">×</button></li>`).join("")}</ul>`).join(""):`<p class="empty">اكتبي أهداف الشهر هون بدل الدفتر، وكل ما تحققي واحد علّمي عليه.</p>`;
-  $("carry-wrap").hidden=!(gs.length&&gs.some(g=>!g.done));
-  const mDone=S.tasks.filter(t=>t.done&&t.doneAt&&t.doneAt>=START&&t.doneAt.slice(0,7)===mk);
-  $("m-done-n").textContent=mDone.length+" مهمة";
-  const max=Math.max(1,...S.areas.map(a=>mDone.filter(t=>t.area===a.id).length));
-  $("m-byarea").innerHTML=S.areas.map(a=>{const n=mDone.filter(t=>t.area===a.id).length;return `<div><span>${esc(a.name)}</span><span class="bar"><i style="width:${n/max*100}%;background:var(${COLORS[a.c%6]})"></i></span><em>${n}</em></div>`}).join("");
-  list("m-donelist",mDone.slice().sort((a,b)=>b.doneAt.localeCompare(a.doneAt)),t=>`<li class="done"><span class="txt">${star(t)}${esc(t.title)}<span class="due">${fmtDay(t.doneAt)}</span></span>${tag(t.area)}</li>`,"لا شي بعد.");
-  $("a-list").innerHTML=S.areas.map(a=>`<span class="tag" style="color:var(${COLORS[a.c%6]})">${esc(a.name)}<button data-act="ad" data-id="${a.id}" aria-label="حذف ${esc(a.name)}">×</button></span>`).join("");
-}
-
-/* ---------- actions ---------- */
-document.addEventListener("click",e=>{const b=e.target.closest("[data-act]");if(!b)return;const id=b.dataset.id,act=b.dataset.act,today=ymd(new Date());
-  if(act==="tt"){const t=S.tasks.find(x=>x.id===id);t.done=!t.done;t.doneAt=t.done?today:null}
-  else if(act==="td"){const i=S.tasks.findIndex(x=>x.id===id);const t=S.tasks.splice(i,1)[0];toast("انحذفت المهمة",()=>S.tasks.splice(i,0,t))}
-  else if(act==="rt"){const k=b.dataset.day||today;const a=S.routineDone[k]=S.routineDone[k]||[];const i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id)}
-  else if(act==="rd"){const arr=S.routine[b.dataset.day];const i=arr.findIndex(x=>x.id===id);const r=arr.splice(i,1)[0];toast("انحذف من الروتين",()=>arr.splice(i,0,r))}
-  else if(act==="gt"||act==="gd"){const mk=mkey(new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1));const arr=S.goals[mk];const i=arr.findIndex(x=>x.id===id);
-    if(act==="gt")arr[i].done=!arr[i].done;else{const g=arr.splice(i,1)[0];toast("انحذف الهدف",()=>arr.splice(i,0,g))}}
-  else if(act==="ad"){if(S.areas.length<=1)return;const i=S.areas.findIndex(x=>x.id===id);const a=S.areas.splice(i,1)[0];toast("انحذفت الجهة «"+a.name+"»",()=>S.areas.splice(i,0,a))}
-  save();render()});
-
-for(const b of document.querySelectorAll(".tabs button"))b.onclick=()=>{view=b.dataset.v;render();try{localStorage.setItem("np-view",view)}catch(e){}};
-try{const v=localStorage.getItem("np-view");if(v)view=v}catch(e){}
-$("t-when").onchange=()=>{$("t-date").hidden=$("t-when").value!=="date"};
-$("f-task").addEventListener("submit",e=>{e.preventDefault();const title=$("t-title").value.trim();if(!title)return;
-  const now=new Date(),w=$("t-when").value;let date=null;
-  if(w==="today")date=ymd(now);else if(w==="tomorrow")date=ymd(addDays(now,1));else if(w==="week")date=ymd(addDays(weekStart(now),6));else if(w==="date")date=$("t-date").value||ymd(now);
-  S.tasks.push({id:uid(),title,area:$("t-area").value,pri:$("t-pri").value,date,done:false,doneAt:null});$("t-title").value="";save();render();$("t-title").focus()});
-$("r-day").onchange=()=>{$("r-day").dataset.v=$("r-day").value};
-$("r-add").onclick=()=>{const title=$("r-title").value.trim();if(!title)return;const d=$("r-day").value;$("r-day").dataset.v=d;
-  (S.routine[d]=S.routine[d]||[]).push({id:uid(),time:$("r-time").value,title,area:$("r-area").value});$("r-title").value="";save();render()};
-$("f-goal").addEventListener("submit",e=>{e.preventDefault();const title=$("g-title").value.trim();if(!title)return;
-  const mk=mkey(new Date(new Date().getFullYear(),new Date().getMonth()+monthOff,1));(S.goals[mk]=S.goals[mk]||[]).push({id:uid(),title,area:$("g-area").value,done:false});$("g-title").value="";save();render()});
-$("carry").onclick=()=>{const n=new Date(),cur=new Date(n.getFullYear(),n.getMonth()+monthOff,1),nk=mkey(new Date(cur.getFullYear(),cur.getMonth()+1,1)),ck=mkey(cur);
-  const left=(S.goals[ck]||[]).filter(g=>!g.done);const dest=S.goals[nk]=S.goals[nk]||[];let c=0;
-  left.forEach(g=>{if(!dest.some(x=>x.title===g.title)){dest.push({id:uid(),title:g.title,area:g.area,done:false});c++}});
-  toast(c?`انتقل ${c} هدف لـ${AR_MONTHS[(cur.getMonth()+1)%12]}`:"كلهم منقولين من قبل");save();render()};
-$("a-add").onclick=()=>{const name=$("a-name").value.trim();if(!name)return;S.areas.push({id:uid(),name,c:S.areas.length%6});$("a-name").value="";save();render()};
-$("w-prev").onclick=()=>{weekOff--;render()};$("w-next").onclick=()=>{weekOff++;render()};
-$("m-prev").onclick=()=>{monthOff--;render()};$("m-next").onclick=()=>{monthOff++;render()};
 render();
 })();
 </script>
-
 </body>
 </html>
